@@ -15,9 +15,11 @@ extern "C" {
 #include "stm32f103x6.h"
 
 /******  types definitions  ***********************************************************************/
-
+//typedef	unsigned int		uint32_t;
+//typedef	signed int			int32_t;
 typedef	short unsigned int	uint16_t;
-typedef	short int			  int16_t;
+typedef	short int			int16_t;
+typedef	signed char			int8_t ;
 typedef	unsigned char		uint8_t ;
 
 

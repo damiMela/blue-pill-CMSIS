@@ -1,32 +1,39 @@
 #include "System.h"
 #include <HAL/OutputPin.h>
+#include <HAL/SW_Timer.h>
+
+//must be included last
 #include <HAL/RHAL.h>
+
 uint32_t mscount = 0;
-bool led_state = false;
+
 
 void ms_func(void){
 	mscount++;
-	if(mscount == 1000){
-		mscount = 0;
-		led_state = !led_state;
-	}
 }
 
-void loop_func(void){
+void setLed(void){
 
 }
 
 
-int main()
-{
+int main(){
+	//RHAL definition. Must be At the top
 	RHAL hal;	
 
-    OutputPin Led(PORTC, 13);
-    Led = false;
+	//Pin Declaration
+	OutputPin Led(PORTC, 13);
+
+	SW_Timer timer1(1000, &setLed);
+
+	//Pin initialization
+    Led = true;
 
 	while(1){
 		hal.do_every_1ms(&ms_func);
-		Led = led_state;
+
+		if(mscount > 6000) Led = true;
+		if((mscount > 3000) && (mscount < 6000)) Led = false;
 
 	}
 }

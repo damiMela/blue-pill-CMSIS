@@ -63,7 +63,3 @@ void RHAL::do_every_1ms(void (* func )(void)){
 		func();
 	}
 }
-
-void RHAL::do_loop(void (* func )(void)){
-	func();
-}

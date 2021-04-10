@@ -6,20 +6,15 @@
  */
 
 #include <HAL/InputPin.h>
-//#include <DR_h/HAL/OutputPin.h>
-#include <Hardware/DR_GPIO.h>
+//#include <HAL/OutputPin.h>
 
 InputPin::InputPin(uint8_t port, uint8_t pin, Mode mode) : Pin(port, pin) {
+	_mode = mode;
+}
+
+void InputPin::init(void){
 	GPIO_setDir(_port, _pin, INPUT);
-	GPIO_setInputMode(_port, _pin, mode);
-}
-
-inline bool InputPin::read() {
-	return GPIO_getPin(_port, _pin);
-}
-
-inline bool InputPin::operator()() {
-	return GPIO_getPin(_port, _pin);
+	GPIO_setInputMode(_port, _pin, _mode);
 }
 
 //OutputPin InputPin::toOutputPin(OutputPin::Mode mode) {

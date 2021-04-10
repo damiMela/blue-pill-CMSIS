@@ -10,7 +10,6 @@
 
 
 OutputPin::OutputPin(uint8_t port, uint8_t pin, Mode mode) : Pin(port, pin) {
-	GPIO_portEn(_port);
 	GPIO_setDir(_port, _pin, OUTPUT);
 	GPIO_setOutputMode(_port, _pin, mode);
 }

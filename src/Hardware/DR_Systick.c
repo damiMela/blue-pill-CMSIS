@@ -24,14 +24,14 @@ extern "C" {
 /*!-----------VARIABLES GLOBALES PRIVADAS-------------------------------------------------------------------*/
 
 /*!-----------VARIABLES GLOBALES PUBLICAS-------------------------------------------------------------------*/
-uint32_t msTicks = 0; 
+
 /*!-----------FUNCIONES-------------------------------------------------------------------------------------*/
 /** @brief 	Systick handler
  *
  */
 
 void SysTick_Handler(void) {   /* startup file startup_stm32f103xx.s for SysTick vector */ 
-  msTicks++;                                              
+  main_flags.Systick_ms = 1;	//pongo flag en 1 para avisar que pasó 1ms                                         
 }
 
 #ifdef __cplusplus

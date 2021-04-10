@@ -26,6 +26,14 @@ typedef	unsigned char		uint8_t ;
 #define 	__RW            volatile 		//< lectura / escritura
 
 
+/******  flags definitions * ***********************************************************************/
+//defino mapa de bits para flags globales
+typedef struct{
+	uint8_t Systick_ms: 1;
+}Flags_t;
+
+extern volatile Flags_t main_flags;//variable global para flags
+
 #ifdef __cplusplus
 }
 #endif

@@ -70,12 +70,12 @@ enum AHB_divFactor{AHB_DIV_NONE,
 	AHB_DIV_512
 };
 
-enum FLASH_latencyWS{FLASH_LATENCY_24MHZ = 0, FLASH_LATENCY_48MHZ = 2, FLASH_LATENCY_72MHZ = 4};
+enum FLASH_latencyWS{FLASH_LATENCY_24MHZ = 0, FLASH_LATENCY_48MHZ = 1, FLASH_LATENCY_72MHZ = 2};
 enum SYSCLK_src{SYSCLK_HSI, SYSCLK_HSE, SYSCLK_PLL};
 
 enum PLL_src{PLL_SRC_HSI,PLL_SRC_HSE};
 enum PLL_multFactor{
-	PLL_MULT_2,
+	PLL_MULT_2 = 0,
 	PLL_MULT_3,
 	PLL_MULT_4,
 	PLL_MULT_5,
@@ -100,6 +100,7 @@ enum PLL_multFactor{
 void CLK_enableHSE(void);
 void CLK_setPrescaler(uint8_t _AHB, uint8_t _APB1, uint8_t _APB2, uint8_t _ADC, uint8_t _USB);
 void CLK_FLASH_setLatency(uint8_t waitSatate);
+void CLK_FLASH_enPrefetch(void);
 void CLK_setPLL_mult(uint8_t mult);
 void CLK_setPLL_src(uint8_t src);
 void CLK_PLL_HSEprediv(uint8_t e);

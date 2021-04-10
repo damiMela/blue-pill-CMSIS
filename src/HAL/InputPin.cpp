@@ -17,6 +17,11 @@ void InputPin::init(void){
 	GPIO_setInputMode(_port, _pin, _mode);
 }
 
+bool operator << (bool val, InputPin &i_pin){
+	val = i_pin.read();
+	return val;
+}
+
 //OutputPin InputPin::toOutputPin(OutputPin::Mode mode) {
 //	return OutputPin(_port, _pin, mode);
 //}

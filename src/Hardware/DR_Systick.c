@@ -24,24 +24,15 @@ extern "C" {
 /*!-----------VARIABLES GLOBALES PRIVADAS-------------------------------------------------------------------*/
 
 /*!-----------VARIABLES GLOBALES PUBLICAS-------------------------------------------------------------------*/
-uint8_t test = 0;
+uint32_t msTicks = 0; 
 /*!-----------FUNCIONES-------------------------------------------------------------------------------------*/
-
-/** @brief 	Inicializa el systick con interrupciones cada 1ms
- *
- */
-void Systick_init(void){
-	SysTick_Config(SysTick->CALIB * 8);
-}
-
 /** @brief 	Systick handler
  *
  */
-/*
-void SysTick_Handler(void){
-	test = !test;
-	//main_flags.Systick_ms = 1;	//pongo flag en 1 para avisar que pasó 1ms
-}*/
+
+void SysTick_Handler(void) {   /* startup file startup_stm32f103xx.s for SysTick vector */ 
+  msTicks++;                                              
+}
 
 #ifdef __cplusplus
 }

@@ -1,9 +1,10 @@
 #include "System.h"
 #include <HAL/OutputPin.h>
+#include <Hardware/DR_Systick.h>
 
 void delay_ms(uint32_t val);
-extern void SysTick_Handler(void);
-uint32_t msTicks = 0;                                       /* Variable to store millisecond ticks */
+
+
 
 int main()
 {
@@ -37,30 +38,42 @@ int main()
 	while(!(RCC->CFGR & RCC_CFGR_SWS_PLL));
 
 	SystemCoreClockUpdate();
-	SysTick_Config(SystemCoreClock / 1000);
+	if(SysTick_Config(SystemCoreClock / 1000)){
+		//capture error
+		while(1);
+	}
+
+	 NVIC_SetPriority(SysTick_IRQn, 16);
+	 NVIC_EnableIRQ(SysTick_IRQn);
 
 
 
 
     OutputPin Led(PORTC, 13);
     Led = false;
+	msTicks = 0;
+	bool led_state = false;
 
 	while(1){
-		Led = true;
-		delay_ms(20);
-		Led = false;
-		delay_ms(20);
+		if(msTicks >= 1000){
+			led_state = !led_state;	
+			msTicks = 0;
+		}
+		Led = led_state;
+
+
+		
+		
+
 	}
 
 
 }
-void SysTick_Handler(void)  {                               /* SysTick interrupt Handler. See startup file startup_LPC17xx.s for SysTick vector */ 
-  msTicks++;                                                   
-}
+
+
 
 void delay_ms(uint32_t val){
 	msTicks = 0;
-	while(msTicks < val);
 }
                                            
 

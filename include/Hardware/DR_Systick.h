@@ -17,12 +17,11 @@ extern "C" {
 /*!-----------DEFINES Y MACROS PUBLCIAS---------------------------------------------------------------------*/
 
 /*!-----------TIPOS DE DATOS PUBLCIAS-----------------------------------------------------------------------*/
-
+                                      /* Variable to store millisecond ticks */
 /*!-----------VARIABLES GLOBALES PUBLICAS-------------------------------------------------------------------*/
-//extern variables
+extern uint32_t msTicks;
 
 /*!-----------FUNCIONES-------------------------------------------------------------------------------------*/
-void Systick_init(void);
 extern void SysTick_Handler(void);
 extern uint8_t test;
 

@@ -8,9 +8,7 @@
 #include <Hardware/DR_PLL.h>
 #include <Hardware/DR_Systick.h>
 
-//#ifdef SW_TIMER_BEING_USED
-	#include <HAL/SW_Timer.h>
-//#endif
+#include <HAL/SW_Timer.h>
 
 volatile Flags_t main_flags;//variable global para flags
 
@@ -25,6 +23,7 @@ RHAL::RHAL(){
     APB_Enable(APB2, GPIOC_APB);
 
 	main_flags.Systick_ms = 0;
+	main_flags.SW_timer_used = 0;
 }
 
 void RHAL::init_CLK(){
@@ -56,9 +55,8 @@ void RHAL::init_CLK(){
 
 void RHAL::do_every_1ms(void (* func )(void)){
 	if(one_ms_passed()){
-		//#ifdef SW_TIMER_BEING_USED
-		SW_Timer::Run();
-		//#endif
+		if(main_flags.SW_timer_used)
+			SW_Timer::Run();
 
 		func();
 	}

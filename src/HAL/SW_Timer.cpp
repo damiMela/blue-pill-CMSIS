@@ -29,6 +29,7 @@ uint32_t SW_Timer::SW_TmrPlay = 0;
 /*!-----------FUNCIONES-------------------------------------------------------------------------------------*/
 
 SW_Timer::SW_Timer(uint16_t t , void (* f_event )(void)){
+	main_flags.SW_timer_used = 1;
 	_TmrTime = t;
 	_TmrFunc = f_event;
 

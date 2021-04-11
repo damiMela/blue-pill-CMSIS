@@ -29,12 +29,14 @@ uint32_t SW_Timer::SW_TmrPlay = 0;
 /*!-----------FUNCIONES-------------------------------------------------------------------------------------*/
 
 SW_Timer::SW_Timer(uint16_t t , void (* f_event )(void)){
+	_TmrTime = t;
+	_TmrFunc = f_event;
 
-	for(uint8_t i = 0; i < N_TIMERS; i++){
+		for(uint8_t i = 0; i < N_TIMERS; i++){
 		if(!TmrUsedState(i)) {
 			_event_N = i;
-			SW_TmrFunc[_event_N] = f_event;
-			SW_TmrTime[_event_N] = t;
+			SW_TmrFunc[_event_N] = _TmrFunc;
+			SW_TmrTime[_event_N] = _TmrTime;
 
 			StartTmr(_event_N);
 			setTmrUsed(_event_N);
@@ -44,6 +46,19 @@ SW_Timer::SW_Timer(uint16_t t , void (* f_event )(void)){
 }
 
 
+void SW_Timer::Start(void){
+
+}
+
+void SW_Timer::Reset(void){
+	if(SW_TmrTime[_event_N] == 0){
+		SW_TmrFunc[_event_N] = _TmrFunc;
+		SW_TmrTime[_event_N] = _TmrTime;
+
+		StartTmr(_event_N);
+		setTmrUsed(_event_N);
+	}
+}
 
 /**
 	@fn  TimerPause
@@ -128,7 +143,9 @@ void SW_Timer::Run ( void ){
 		for(uint8_t i = 0; i < N_TIMERS; i ++){
 			if((SW_TmrTime[i]) && (TmrPlayState(i))){
 				SW_TmrTime[i]--;
-				if(!SW_TmrTime[i])	SW_TmrFunc[i]();
+				if(!SW_TmrTime[i]){
+					SW_TmrFunc[i]();
+				}
 			}
 		}
 	}

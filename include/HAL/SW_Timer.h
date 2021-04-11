@@ -24,17 +24,22 @@
 class SW_Timer{
 public:
 	SW_Timer(uint16_t t, void (* f_event )(void));
+	void Start(void);
+	void Reset(void);
 	bool Pause(bool state);
 	bool Stop();
 	int16_t Get();
 	bool Set(uint16_t t);
-	void Close();
+	
+	//void Close();
 	static void Run(void);
 
 //	friend void RHAL::do_every_1ms(void (* func )(void));
 
 private:
 	uint8_t _event_N;
+	uint16_t _TmrTime;
+	void (*_TmrFunc)(void);
 
 	static uint16_t SW_TmrTime[ N_TIMERS ];
 	static void (*SW_TmrFunc[ N_TIMERS ])(void);

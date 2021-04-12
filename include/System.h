@@ -32,7 +32,6 @@ typedef	unsigned char		uint8_t ;
 //defino mapa de bits para flags globales
 typedef struct{
 	uint8_t Systick_ms: 1;
-	uint8_t SW_timer_used :1;
 }Flags_t;
 
 extern volatile Flags_t main_flags;//variable global para flags

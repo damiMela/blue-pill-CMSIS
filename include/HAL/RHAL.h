@@ -13,15 +13,15 @@
 class RHAL{
 public:
 	RHAL();
-	inline uint8_t one_ms_passed(){
+	void tick(void (* func )(void));
+
+private:
+	void _initClock();
+	inline uint8_t _systick(){
 		uint8_t res = main_flags.Systick_ms;
 		main_flags.Systick_ms = 0;
 		return res;
 	};
-	void do_every_1ms(void (* func )(void));
-
-private:
-	void init_CLK();
 };
 
 

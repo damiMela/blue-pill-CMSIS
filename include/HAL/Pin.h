@@ -14,6 +14,7 @@ class Pin {
 
 public:
 	Pin(uint8_t port, uint8_t pin);
+	virtual void init() = 0;
 
 protected:
 	uint8_t _port;

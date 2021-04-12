@@ -11,7 +11,6 @@
 #include "System.h"
 #include <HAL/Pin.h>
 #include <Hardware/DR_GPIO.h>
-//#include "InputPin.h"
 
 class OutputPin : Pin {
 
@@ -21,7 +20,6 @@ public:
 	void init(void);
 	inline void set(bool v){	GPIO_setPin(_port, _pin, v);	};
 	inline void operator <<(bool v) {	GPIO_setPin(_port, _pin, v);	};
-//	InputPin toInputPin(InputPin::Mode mode);
 
 private:
 	uint8_t _mode;

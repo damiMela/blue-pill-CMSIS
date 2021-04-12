@@ -1,13 +1,11 @@
 /*
- * SW_Timer.h
+ * SoftwareTimer.h
  *
  *  Created on: 5 ene. 2021
  *      Author: usuario
  */
-#define SW_TIMER_BEING_USED
-
-#ifndef DR_H_HAL_SW_TIMER_H_
-#define DR_H_HAL_SW_TIMER_H_
+#ifndef DR_H_HAL_SOFTWARETIMER_H_
+#define DR_H_HAL_SOFTWARETIMER_H_
 
 /*!-----------INCLUDES PUBLICOS-----------------------------------------------------------------------------*/
 #include <System.h>
@@ -21,30 +19,30 @@
 
 /*!-----------FUNCIONES-------------------------------------------------------------------------------------*/
 
-class SW_Timer{
+class SoftwareTimer{
 public:
-	SW_Timer(uint16_t t, void (* f_event )(void));
-	void Start(void);
-	void Reset(void);
-	bool Pause(bool state);
-	bool Stop();
-	int16_t Get();
-	bool Set(uint16_t t);
+	SoftwareTimer(uint16_t time, void (*function)(void));
+	void start(void);
+	void reset(void);
+	bool pause(bool state);
+	bool stop();
+	int16_t get();
+	bool set(uint16_t time);
 	
 	//void Close();
-	static void Run(void);
+	static void tick(void);
 
-//	friend void RHAL::do_every_1ms(void (* func )(void));
+//	friend void RHAL::tick(void (* func )(void));
 
 private:
-	uint8_t _event_N;
-	uint16_t _TmrTime;
-	void (*_TmrFunc)(void);
+	uint8_t _index;
+	uint16_t _time;
+	void (*_function)(void);
 
-	static uint16_t SW_TmrTime[ N_TIMERS ];
-	static void (*SW_TmrFunc[ N_TIMERS ])(void);
-	static uint32_t SW_TmrPlay;
-	static uint32_t SW_TmrUsed;
+	static uint16_t _timerCounters[ N_TIMERS ];
+	static void (*_timerFunctions[ N_TIMERS ])(void);
+	static uint32_t _runningTimers;
+	static uint32_t _usedTimers;
 
 
 protected:
@@ -52,4 +50,4 @@ protected:
 
 };
 
-#endif /* DR_H_HAL_SW_TIMER_H_ */
+#endif /* DR_H_HAL_SOFTWARETIMER_H_ */

@@ -20,6 +20,15 @@ public:
 	void init(void);
 	inline void set(bool v){	GPIO_setPin(_port, _pin, v);	};
 	inline void operator <<(bool v) {	GPIO_setPin(_port, _pin, v);	};
+	
+	friend bool& operator<< (bool &val, const OutputPin &o_pin);
+	OutputPin operator<< (OutputPin &o_pin_s){
+		GPIO_setPin(this->_port, 
+		this->_pin,
+		GPIO_getStatus(o_pin_s._port, o_pin_s._pin));
+		return *this;
+	}
+
 
 private:
 	uint8_t _mode;

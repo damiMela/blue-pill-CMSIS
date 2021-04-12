@@ -20,9 +20,7 @@ public:
 	InputPin(uint8_t port, uint8_t pin, Mode mode = PULLDOWN);
 	void init(void);
 	inline bool read() { return GPIO_getPin(_port, _pin); }	
-	
-	friend bool& operator<< (bool &val, const InputPin &i_pin);
-	friend OutputPin& operator << (OutputPin &o_pin, const InputPin &i_pin);
+	inline bool operator () () { return GPIO_getPin(_port, _pin); }
 
 //	OutputPin toOutputPin(OutputPin::Mode mode);
 

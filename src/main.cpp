@@ -1,12 +1,5 @@
 #include "System.h"
-#include <HAL/OutputPin.h>
-#include <HAL/SW_Timer.h>
 
-
-#include <Hardware/DR_Timer.h>
-#include <Hardware/DR_PLL.h>
-#include <Hardware/DR_GPIO.h>
-//must be included last
 #include <HAL/RHAL.h>
 
 //Pin declaration

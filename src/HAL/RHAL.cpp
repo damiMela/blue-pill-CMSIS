@@ -5,10 +5,10 @@
  *      Author: Damián
  */
 #include <HAL/RHAL.h>
+
+//Hardware includes
 #include <Hardware/DR_PLL.h>
 #include <Hardware/DR_Systick.h>
-
-#include <HAL/SW_Timer.h>
 
 volatile Flags_t main_flags;//variable global para flags
 

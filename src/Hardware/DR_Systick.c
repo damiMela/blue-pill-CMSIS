@@ -8,8 +8,6 @@
 
 /*!-----------INCLUDES PRIVADOS-----------------------------------------------------------------------------*/
 #include <Hardware/DR_Systick.h>
-#include <Hardware/DR_GPIO.h>
-
 
 #ifdef __cplusplus
 extern "C" {
@@ -29,7 +27,6 @@ extern "C" {
 /** @brief 	Systick handler
  *
  */
-
 void SysTick_Handler(void) {   /* startup file startup_stm32f103xx.s for SysTick vector */ 
   main_flags.Systick_ms = 1;	//pongo flag en 1 para avisar que pasó 1ms                                         
 }

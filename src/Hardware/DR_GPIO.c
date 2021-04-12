@@ -12,6 +12,9 @@ extern "C" {
 
 #define GPIO    (( GPIO_TypeDef *) GPIOA_BASE)
 
+/** @brief 	Habilita el puerto de GPIO. Se puede habilitar con APB_Enable.
+ *  @param	Puerto del pin que se quiere congurar
+ */
 void GPIO_portEn(uint8_t port){
     switch(port){
         case PORTA:     APB_Enable(APB2, GPIOA_APB);     break;
@@ -131,7 +134,7 @@ void GPIO_setAltMode(uint8_t port, uint8_t pin, uint8_t mode){
  *  @param 	Número de pin a configurar
  *  @param	Modo. USAR DEFINES HIGH y LOW
  */
-void GPIO_setPin(uint8_t port, uint8_t pin, uint8_t val){
+extern inline void GPIO_setPin(uint8_t port, uint8_t pin, uint8_t val){
 	if(val == HIGH)		GPIO[port].BSRR |= (1 << pin);
 	else if(val == LOW)	GPIO[port].BSRR |= (1 << (pin+16));
 }
@@ -142,7 +145,7 @@ void GPIO_setPin(uint8_t port, uint8_t pin, uint8_t val){
  *  @param 	Número de pin a configurar
  *  @return estado del pin. DEFINES HIGH y LOW
  */
-uint8_t GPIO_getPin(uint8_t port, uint8_t pin){
+extern inline uint8_t GPIO_getPin(uint8_t port, uint8_t pin){
 	return ((GPIO[port].IDR >> pin) & 0x01);
 }
 
@@ -151,7 +154,7 @@ uint8_t GPIO_getPin(uint8_t port, uint8_t pin){
  *  @param 	Número de pin a configurar
  *  @return estado del pin. DEFINES HIGH y LOW
  */
-uint8_t GPIO_getStatus(uint8_t port, uint8_t pin){
+extern inline uint8_t GPIO_getStatus(uint8_t port, uint8_t pin){
 	return ((GPIO[port].ODR >> pin) & 0x01);
 }
 

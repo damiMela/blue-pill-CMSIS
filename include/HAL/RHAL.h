@@ -10,6 +10,12 @@
 
 #include <System.h>
 
+//Hal includes
+#include <HAL/SW_Timer.h>
+#include <HAL/OutputPin.h>
+#include <HAL/InputPin.h>
+#include <HAL/AlternativePin.h>
+
 class RHAL{
 public:
 	RHAL();

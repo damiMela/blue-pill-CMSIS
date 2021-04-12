@@ -1,12 +1,12 @@
 #include "System.h"
 #include <HAL/OutputPin.h>
-#include <HAL/SW_Timer.h>
+#include <HAL/SoftwareTimer.h>
 
 //must be included last
 #include <HAL/RHAL.h>
 
 //Pin declaration
-OutputPin Led(PORTC, 13);
+OutputPin led(PORTC, 13);
 
 //Variable declaration
 uint32_t ms_counter = 0;
@@ -17,7 +17,7 @@ void ms_func(void){
 
 void changeLed(void){
 	static uint8_t state = 0;
-	Led << state;
+	led << state;
 	state = !state;
 }
 
@@ -26,18 +26,20 @@ int main(){
 	RHAL hal;	
 
 	//Inicialization
-	Led.init();
+	led.init();
 	
-	SW_Timer timer(1000, &changeLed);
+	SoftwareTimer timer(500, &changeLed);
 
 	//Pin initialization
-    Led << true;
+    led << false;
 
 	while(1){
-		hal.do_every_1ms(&ms_func);
-		timer.Reset(); //Se reinicia el timer apenas termina de ejecutarse.
+		hal.tick(&ms_func);
+		timer.reset(); //Se reinicia el timer apenas termina de ejecutarse.
 
-		if(ms_counter >= 6000) timer.Stop(); //a los 6 segundos elimina el timer
+		//if(ms_counter >= 6000) timer.stop(); //a los 6 segundos elimina el timer
 
 	}
+
+	return 0;
 }

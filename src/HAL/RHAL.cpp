@@ -8,12 +8,12 @@
 #include <Hardware/DR_PLL.h>
 #include <Hardware/DR_Systick.h>
 
-#include <HAL/SW_Timer.h>
+#include <HAL/SoftwareTimer.h>
 
 volatile Flags_t main_flags;//variable global para flags
 
 RHAL::RHAL(){
-	init_CLK();
+	_initClock();
     SysTick_Config(SystemCoreClock / 1000);
     NVIC_SetPriority(SysTick_IRQn, 16);
     NVIC_EnableIRQ(SysTick_IRQn);
@@ -23,10 +23,9 @@ RHAL::RHAL(){
     APB_Enable(APB2, GPIOC_APB);
 
 	main_flags.Systick_ms = 0;
-	main_flags.SW_timer_used = 0;
 }
 
-void RHAL::init_CLK(){
+void RHAL::_initClock(){
 	//Enable External clock
 	CLK_enableHSE();
 
@@ -52,12 +51,16 @@ void RHAL::init_CLK(){
     SystemCoreClockUpdate();
 }
 
+/**
+	@fn  RHAL Tick
+	@brief Ejecuta el tick de la RHAL y del programa del usuario en cada SysTick (1ms)
+ 	@author Damian Melamed
+ 	@param [in] Funcion de tick del programa del usuario.
+*/
+void RHAL::tick(void (* func )(void)){
+	if(!_systick()) return;
+	
+	SoftwareTimer::tick();
 
-void RHAL::do_every_1ms(void (* func )(void)){
-	if(one_ms_passed()){
-		if(main_flags.SW_timer_used)
-			SW_Timer::Run();
-
-		func();
-	}
+	func();
 }

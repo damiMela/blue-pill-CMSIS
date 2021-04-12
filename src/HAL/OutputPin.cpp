@@ -18,6 +18,10 @@ void OutputPin::init(void){
 	GPIO_setOutputMode(_port, _pin, _mode);
 }
 
+bool& operator << (bool &val, const OutputPin &o_pin) {
+	val = GPIO_getStatus(o_pin._port, o_pin._pin);
+	return val;
+}
 //InputPin OutputPin::toInputPin(InputPin::Mode mode) {
 //	return InputPin(_port, _pin, mode);
 //}

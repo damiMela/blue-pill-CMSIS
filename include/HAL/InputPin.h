@@ -11,7 +11,7 @@
 #include <System.h>
 #include <HAL/Pin.h>
 #include <Hardware/DR_GPIO.h>
-//#include "OutputPin.h"
+#include <HAL/OutputPin.h>
 
 class InputPin : Pin {
 
@@ -20,7 +20,9 @@ public:
 	InputPin(uint8_t port, uint8_t pin, Mode mode = Mode::PULLDOWN);
 	void init(void);
 	bool read() {return GPIO_getPin(_port, _pin);}
-	friend bool operator<< (bool val, const InputPin &i_pin);
+	
+	friend bool& operator<< (bool &val, const InputPin &i_pin);
+	friend OutputPin& operator << (OutputPin &o_pin, const InputPin &i_pin);
 //	OutputPin toOutputPin(OutputPin::Mode mode);
 
 private:

@@ -35,7 +35,6 @@ enum APB2_bits{
 enum APB1_bits{
 	TIM2_APB = 0,
 	TIM3_APB = 1,
-	TIM4_APB = 2,
 
 	WWDG_APB = 11,
 

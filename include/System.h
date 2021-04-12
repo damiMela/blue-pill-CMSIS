@@ -14,8 +14,6 @@ extern "C" {
 
 #include "stm32f103x6.h"
 
-# define FORCE_INLINE __attribute__((always_inline)) inline
-
 /******  types definitions  ***********************************************************************/
 //typedef	unsigned int		uint32_t;
 //typedef	signed int			int32_t;
@@ -34,8 +32,6 @@ typedef	unsigned char		uint8_t ;
 //defino mapa de bits para flags globales
 typedef struct{
 	uint8_t Systick_ms: 1;
-	uint8_t SW_timer_used :1;
-	//uint8_t timer_used :1;
 }Flags_t;
 
 extern volatile Flags_t main_flags;//variable global para flags

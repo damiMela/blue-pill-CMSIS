@@ -11,18 +11,19 @@
 #include <System.h>
 #include <HAL/Pin.h>
 #include <Hardware/DR_GPIO.h>
-#include <HAL/OutputPin.h>
+//#include "OutputPin.h"
 
 class InputPin : Pin {
 
 public:
 	enum Mode {PULLUP, PULLDOWN, FLOATING, ANALOG};
-	InputPin(uint8_t port, uint8_t pin, Mode mode = Mode::PULLDOWN);
+	InputPin(uint8_t port, uint8_t pin, Mode mode = PULLDOWN);
 	void init(void);
-	bool read() {return GPIO_getPin(_port, _pin);}
-	
-	friend bool& operator<< (bool &val, const InputPin &i_pin);
-	friend OutputPin& operator << (OutputPin &o_pin, const InputPin &i_pin);
+	inline bool read() { return GPIO_getPin(_port, _pin); }
+	inline friend bool operator<< (bool val, InputPin &i_pin){
+		val = i_pin.read();
+		return val;
+	}
 //	OutputPin toOutputPin(OutputPin::Mode mode);
 
 private:

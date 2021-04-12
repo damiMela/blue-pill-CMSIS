@@ -1,0 +1,6 @@
+{
+    "files.associations": {
+        "dr_gpio.h": "c",
+        "dr_pll.h": "c"
+    }
+}

@@ -1,17 +1,19 @@
 /*
- * SoftwareTimer.h
+ * HardwareTimer.h
  *
  *  Created on: 5 ene. 2021
  *      Author: Damian Melamed
  */
-#ifndef DR_H_HAL_SOFTWARETIMER_H_
-#define DR_H_HAL_SOFTWARETIMER_H_
+#ifndef DR_H_HAL_HARDWARETIMER_H_
+#define DR_H_HAL_HARDWARETIMER_H_
 
 /*!-----------INCLUDES PUBLICOS-----------------------------------------------------------------------------*/
 #include <System.h>
 #include <HAL/RHAL.h>
+
+#include <Hardware/DR_Timer.h>
 /*!-----------DEFINES Y MACROS PUBLCIAS---------------------------------------------------------------------*/
-#define N_SOFTWARE_TIMERS	32
+
 /*!-----------TIPOS DE DATOS PUBLCIAS-----------------------------------------------------------------------*/
 
 /*!-----------VARIABLES GLOBALES PUBLICAS-------------------------------------------------------------------*/
@@ -19,9 +21,9 @@
 
 /*!-----------FUNCIONES-------------------------------------------------------------------------------------*/
 
-class SoftwareTimer{
+class HardwareTimer{
 public:
-	SoftwareTimer(uint16_t time, void (*function)(void));
+	HardwareTimer(uint8_t timer, uint16_t presc, uint16_t val, void (*function)(void));
 	void start(void);
 	void reset(void);
 	bool pause(bool state);
@@ -35,15 +37,9 @@ public:
 //	friend void RHAL::tick(void (* func )(void));
 
 private:
-	uint8_t _index;
-	uint16_t _time;
-	void (*_function)(void);
-
-	static uint16_t _timerCounters[ N_SOFTWARE_TIMERS ];
-	static void (*_timerFunctions[ N_SOFTWARE_TIMERS ])(void);
-	static uint32_t _runningTimers;
-	static uint32_t _usedTimers;
- 
+    uint8_t _timerN;
+	uint16_t _presc;
+	uint16_t _val;
 
 protected:
 

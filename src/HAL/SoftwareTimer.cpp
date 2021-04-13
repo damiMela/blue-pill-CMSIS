@@ -2,7 +2,7 @@
  * SoftwareTimer.cpp
  *
  *  Created on: 5 ene. 2021
- *      Author: usuario
+ *      Author: Damian Melamed
  */
 
 
@@ -20,8 +20,8 @@
 /*!-----------TIPOS DE DATOS PRIVADOS-----------------------------------------------------------------------*/
 
 /*!-----------VARIABLES GLOBALES PRIVADAS-------------------------------------------------------------------*/
-uint16_t SoftwareTimer::_timerCounters[ N_TIMERS ] = {0};
-void (*SoftwareTimer::_timerFunctions[ N_TIMERS ])(void) = {nullptr};
+uint16_t SoftwareTimer::_timerCounters[ N_SOFTWARE_TIMERS ] = {0};
+void (*SoftwareTimer::_timerFunctions[ N_SOFTWARE_TIMERS ])(void) = {nullptr};
 uint32_t SoftwareTimer::_usedTimers = 0;
 uint32_t SoftwareTimer::_runningTimers = 0;
 /*!-----------VARIABLES GLOBALES PUBLICAS-------------------------------------------------------------------*/
@@ -40,7 +40,7 @@ SoftwareTimer::SoftwareTimer(uint16_t time, void (*function)(void)){
 	_time = time;
 	_function = function;
 
-	for(uint8_t i = 0; i < N_TIMERS; i++){
+	for(uint8_t i = 0; i < N_SOFTWARE_TIMERS; i++){
 		if(TIMER_IS_USED(i)) continue;
 
 		_index = i;
@@ -150,7 +150,7 @@ void SoftwareTimer::tick ( void ){
 	if(!_usedTimers) return; // si no hay timers usados, salir
 	if(!_runningTimers) return;	// si no hay timers corriendo, salir
 
-	for(uint8_t i = 0; i < N_TIMERS; i++){
+	for(uint8_t i = 0; i < N_SOFTWARE_TIMERS; i++){
 		if(!TIMER_IS_RUNNING(i)) continue;
 		_timerCounters[i]--;
 

@@ -11,7 +11,7 @@ OutputPin led(PORTC, 13);
 InputPin btn(PORTB, 12, InputPin::PULLUP);
 
 //Variable declaration
-uint32_t ms_counter = 0;
+volatile uint32_t ms_counter = 0;
 
 void ms_func(void){
 	ms_counter++;
@@ -35,6 +35,13 @@ int main(){
 	//Pin initialization
     led = 0;
 
+<<<<<<< Updated upstream
+=======
+	//SoftwareTimer timer(500, &changeLed);
+	for (uint16_t i = 0; i < 10000; i++);
+	HardwareTimer tim2(_TIM1, 72, 1000, &ms_func);
+	
+>>>>>>> Stashed changes
 	while(1){
 		hal.tick(&ms_func);
 		//timer.reset(); //Se reinicia el timer apenas termina de ejecutarse.

@@ -77,24 +77,26 @@ extern inline void TIM_update_config(uint8_t timN){
 
 /*
 //for PWM
-
-inline void TIM_setClockDiv(uint8_t timN, uint8_t val){
-	TIM_REG[timN]->CR1 &= ~TIM_CR1_CKD;
-	TIM_REG[timN]->CR1 |= (val << TIM_CR1_CKD_Pos);
-}
-
 inline void TIM_setActiveHigh(uint8_t timN, uint8_t chnl){
 	TIM_REG[timN]->CCER &= TIM_CCER
 	//TIM_REG[timN]->CCER &= (1 << (CCER_POLAR_BIT + 4*chnl));
+}
+
+inline void TIM_setVal(uint8_t timN, uint8_t chnl, uint16_t val){
+	TIM_REG[timN]->CCR[chnl] = val;
 }
 
 inline void TIM_output_en(uint8_t timN, uint8_t chnl){
 	TIM_REG[timN]->CCER &= (1 << (CCER_OUT_EN_BIT + 4*chnl));
 }
 
-inline void TIM_setVal(uint8_t timN, uint8_t chnl, uint16_t val){
-	TIM_REG[timN]->CCR[chnl] = val;
+inline void TIM_setClockDiv(uint8_t timN, uint8_t val){
+	TIM_REG[timN]->CR1 &= ~TIM_CR1_CKD;
+	TIM_REG[timN]->CR1 |= (val << TIM_CR1_CKD_Pos);
 }
+
+
+
 
 
 //for encoder mode

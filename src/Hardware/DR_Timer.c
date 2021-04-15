@@ -39,7 +39,7 @@ extern inline void TIM_setPeriod(uint8_t timN, uint16_t val){
 	TIM_REG[timN]->ARR = val;
 }
 
-extern inline void TIM_setPLL(uint8_t timN, uint16_t val){
+extern inline void TIM_setPresc(uint8_t timN, uint16_t val){
 	TIM_REG[timN]->PSC = val;
 }
 
@@ -73,6 +73,9 @@ extern inline void TIM_update_config(uint8_t timN){
 	TIM_REG[timN]->EGR |= TIM_EGR_UG;
 }
 
+extern inline void TIM_rst_interrupt_flag(uint8_t timN){
+	TIM_REG[timN]->SR &= ~TIM_SR_UIF;
+}
 
 
 /*

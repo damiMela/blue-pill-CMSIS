@@ -171,6 +171,7 @@ void GPIO_setPin(uint8_t port, uint8_t pin, uint8_t val) {
         GPIO[port].BSRR |= (1 << pin);
     else if (val == LOW)
         GPIO[port].BRR |= (1 << pin);
+
 }
 
 /** @brief devuelve el estado del pin Cuando está configurado como input

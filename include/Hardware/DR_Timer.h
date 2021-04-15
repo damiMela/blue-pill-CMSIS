@@ -16,6 +16,8 @@
 extern "C" {
 #endif
 
+#define N_HARDWARE_TIMERS   3
+
 /*!-----------DEFINES Y MACROS PUBLCIAS---------------------------------------------------------------------*/
 enum timers_en{_TIM1, _TIM2, _TIM3};
 enum count_mode{UP_COUNT, DOWN_COUNT};
@@ -32,7 +34,7 @@ enum PWM_mode{PWM_MODE1=6, PWM_MODE2};
 
 /*!-----------FUNCIONES-------------------------------------------------------------------------------------*/
 void TIM_setPeriod(uint8_t timN, uint16_t val);
-void TIM_setPLL(uint8_t timN, uint16_t val);
+void TIM_setPresc(uint8_t timN, uint16_t val);
 void TIM_setCountMode(uint8_t timN, uint8_t mode);
 void TIM_autoReload_en(uint8_t timN);
 void TIM_counter_en(uint8_t timN);
@@ -40,6 +42,7 @@ void TIM_URS_en(uint8_t timN);
 void TIM_Interrupt_en(uint8_t timN);
 void TIM_Interrupt_dis(uint8_t timN);
 void TIM_update_config(uint8_t timN);
+void TIM_rst_interrupt_flag(uint8_t timN);
 
 void TIM_setClockDiv(uint8_t timN, uint8_t val);
 void TIM_setActiveHigh(uint8_t timN, uint8_t chnl);

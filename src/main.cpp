@@ -2,6 +2,8 @@
 #include <HAL/OutputPin.h>
 #include <HAL/InputPin.h>
 #include <HAL/SoftwareTimer.h>
+#include <HAL/HardwareTimer.h>
+
 
 //must be included last
 #include <HAL/RHAL.h>
@@ -35,20 +37,21 @@ int main(){
 	//Pin initialization
     led = 0;
 
-<<<<<<< Updated upstream
-=======
 	//SoftwareTimer timer(500, &changeLed);
 	for (uint16_t i = 0; i < 10000; i++);
 	HardwareTimer tim2(_TIM1, 72, 1000, &ms_func);
 	
->>>>>>> Stashed changes
 	while(1){
-		hal.tick(&ms_func);
+		//hal.tick(&ms_func);
 		//timer.reset(); //Se reinicia el timer apenas termina de ejecutarse.
 
 		//if(ms_counter >= 6000) timer.stop(); //a los 6 segundos elimina el timer
+		//led = !btn();
+		if(ms_counter >= 1000){
+			changeLed();
+			ms_counter = 0;
+		}
 
-		led = !btn();
 	}
 
 	return 0;

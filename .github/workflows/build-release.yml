@@ -19,6 +19,7 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y python3 curl
           python3 -c "$(curl -fsSL https://raw.githubusercontent.com/platformio/platformio/master/scripts/get-platformio.py)"
+          export PATH=$PATH:~/.platformio/penv/bin
           platformio run
       - name: Release
         uses: softprops/action-gh-release@v1

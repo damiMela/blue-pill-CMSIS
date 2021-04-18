@@ -1,13 +1,7 @@
 name: build-release
 on:
-  push:
-    branches:
-      - main
-      - release
-  pull_request:
-    branches:
-      - main
-      - release
+  release:
+    types: [created]
 jobs:
   build:
     runs-on: ubuntu-latest

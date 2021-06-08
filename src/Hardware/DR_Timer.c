@@ -36,6 +36,7 @@ TIM_TypeDef *const TIM_REG[] = {
 
 ///general
 extern inline void TIM_setPeriod(uint8_t timN, uint16_t val){
+	TIM_REG[timN]->ARR &= 0;
 	TIM_REG[timN]->ARR = val;
 }
 

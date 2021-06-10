@@ -41,7 +41,7 @@ enum APB1_bits{
 	SPI2_APB = 14,
 
 	USART2_APB = 17,
-	USART3_APB = 18,
+	//USART3_APB = 18,
 
 	I2C1_APB = 21,
 	I2C2_APB = 22,

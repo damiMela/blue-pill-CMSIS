@@ -68,13 +68,13 @@ void GPIO_setOutputMode(uint8_t port, uint8_t pin, uint8_t mode) {
     //---reset bits to be set
     // pongo en 0 los bits de crl.cnf. Está configurado como analog
     if (pin > 7)
-        GPIO[port].CRH &= ~(0x03 << ((pin - 7) * 4 + CNF_OFFSET));
+        GPIO[port].CRH &= ~(0x03 << ((pin - 8) * 4 + CNF_OFFSET));
     else
         GPIO[port].CRL &= ~(0x03 << (pin * 4 + CNF_OFFSET));
 
     //---set bits
     if (pin > 7)
-        GPIO[port].CRH |= (mode << ((pin - 7) * 4 + CNF_OFFSET));
+        GPIO[port].CRH |= (mode << ((pin - 8) * 4 + CNF_OFFSET));
     else
         GPIO[port].CRL |= (mode << (pin * 4 + CNF_OFFSET));
 }
@@ -89,9 +89,9 @@ void GPIO_setOutputMode(uint8_t port, uint8_t pin, uint8_t mode) {
 void GPIO_setMaxOutputSpeed(uint8_t port, uint8_t pin, uint8_t vel) {
     //---set bits
     if (pin > 7)
-        GPIO[port].CRH |= (vel << ((pin * 4) + MODE_OFFSET));
+        GPIO[port].CRH |= (vel << ((pin - 8) * 4 + MODE_OFFSET));
     else
-        GPIO[port].CRL |= (vel << ((pin * 4) + MODE_OFFSET));
+        GPIO[port].CRL |= (vel << (pin * 4 + MODE_OFFSET));
 }
 
 /** @brief 	poner un pin configurado como input en pullup, pul down, etc
@@ -106,19 +106,19 @@ void GPIO_setInputMode(uint8_t port, uint8_t pin, uint8_t mode) {
     GPIO[port].ODR &= ~(1 << pin);
 
     if (pin > 7)
-        GPIO[port].CRH &= ~(0x03 << ((pin * 4) + CNF_OFFSET));
+        GPIO[port].CRH &= ~(0x03 << ((pin - 8) * 4 + CNF_OFFSET));
     else
-        GPIO[port].CRL &= ~(0x03 << ((pin * 4) + CNF_OFFSET));
+        GPIO[port].CRL &= ~(0x03 << (pin * 4 + CNF_OFFSET));
 
     //---set bits
     if (pin > 7)
-        GPIO[port].CRH |= (mode << ((pin * 4) + CNF_OFFSET));
+        GPIO[port].CRH |= (mode << ((pin - 8) * 4 + CNF_OFFSET));
     else
-        GPIO[port].CRL |= (mode << ((pin * 4) + CNF_OFFSET));
+        GPIO[port].CRL |= (mode << (pin * 4 + CNF_OFFSET));
 
-    if (mode == INPUT_PULLUP)
+    if (mode == INPUT_PULLUP) 
         GPIO[port].ODR |= (1 << pin);
-    else
+    else if(mode == INPUT_PULLDOWN)
         GPIO[port].ODR &= ~(1 << pin);
 }
 
@@ -132,15 +132,15 @@ void GPIO_setAltMode(uint8_t port, uint8_t pin, uint8_t mode) {
     //---reset bits to be set
     // pongo en 0 los bits de crl.cnf. Está configurado como analog
     if (pin > 7)
-        GPIO[port].CRH &= ~(0x03 << ((pin * 4) + CNF_OFFSET));
+        GPIO[port].CRH &= ~(0x03 << ((pin - 8) * 4 + CNF_OFFSET));
     else
-        GPIO[port].CRL &= ~(0x03 << ((pin * 4) + CNF_OFFSET));
+        GPIO[port].CRL &= ~(0x03 << (pin * 4 + CNF_OFFSET));
 
     //---set bits
     if (pin > 7)
-        GPIO[port].CRH |= (mode << ((pin * 4) + CNF_OFFSET));
+        GPIO[port].CRH |= (mode << ((pin - 8) * 4 + CNF_OFFSET));
     else
-        GPIO[port].CRL |= (mode << ((pin * 4) + CNF_OFFSET));
+        GPIO[port].CRL |= (mode << (pin * 4 + CNF_OFFSET));
 }
 
 /*!<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>!*/

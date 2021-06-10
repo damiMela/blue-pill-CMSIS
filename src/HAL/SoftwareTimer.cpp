@@ -39,7 +39,10 @@ uint32_t SoftwareTimer::_runningTimers = 0;
 SoftwareTimer::SoftwareTimer(uint16_t time, void (*function)(void)){
 	_time = time;
 	_function = function;
+	init();
+}
 
+bool SoftwareTimer::init(void){
 	for(uint8_t i = 0; i < N_TIMERS; i++){
 		if(TIMER_IS_USED(i)) continue;
 
@@ -49,8 +52,9 @@ SoftwareTimer::SoftwareTimer(uint16_t time, void (*function)(void)){
 
 		TIMER_START(_index);
 		TIMER_SET_USED(_index);
-		break;
+		return true;
 	}
+	return false;
 }
 
 void SoftwareTimer::loop(void){

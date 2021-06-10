@@ -44,7 +44,7 @@ void GPIO_setInputMode(uint8_t port, uint8_t pin, uint8_t mode);
 void GPIO_setOutputMode(uint8_t port, uint8_t pin, uint8_t mode);
 void GPIO_setMaxOutputSpeed(uint8_t port, uint8_t pin, uint8_t vel);
 void GPIO_setAltMode(uint8_t port, uint8_t pin, uint8_t mode);
-
+void GPIO_setPull(uint8_t port, uint8_t pin, uint8_t set);
 
 #ifdef __cplusplus
 }

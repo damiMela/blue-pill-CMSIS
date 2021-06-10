@@ -9,6 +9,7 @@ PWM::PWM(HardwareTimer& timer, uint8_t chn, uint8_t port, uint8_t pin){
     _maxCount = timer._period;
     _timerN = timer._timerN;
 
+    timer.init();
     GPIO_setDir(_port, _pin, ALTERNATE);
     GPIO_setAltMode(_port, _pin, ALTERNATE_PUSHPULL);
     GPIO_setMaxOutputSpeed(_port, _pin, MAX_VEL_50MHZ);

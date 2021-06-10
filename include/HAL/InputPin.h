@@ -16,7 +16,7 @@
 class InputPin : Pin {
 
 public:
-	enum Mode {ANALOG = 0, FLOATING = 1, PULLUP = 2, PULLDOWN = 2};
+	enum Mode {ANALOG = 0, FLOATING = 1, PULLUP = 2, PULLDOWN = 3};
 	InputPin(uint8_t port, uint8_t pin, Mode mode = PULLDOWN);
 	void init(void);
 	inline bool read() { return GPIO_getPin(_port, _pin); }	

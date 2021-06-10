@@ -1,3 +1,4 @@
+#include <stdio.h>
 
 #include "System.h"
 #include <HAL/OutputPin.h>
@@ -15,9 +16,11 @@
 
 
 //Pin declaration
-OutputPin led(PORTA, 6);
+OutputPin led(PORTC, 13);
+InputPin btn(PORTB, 10, InputPin::PULLUP);
 Serial serial(UART1, baud_9600);
 HardwareTimer pwmTimer(HardwareTimer::TIMER3, 72, 100);
+HardwareTimer HWtimer(HardwareTimer::TIMER2, 7200, 10000);
 
 //Variable declaration
 volatile uint32_t ms_counter = 0;
@@ -40,33 +43,30 @@ int main(){
 
 	//Pin initialization
 	led.init();
-	led = 0;
-
+	btn.init();
+	HWtimer.init();
+	serial.init();
+	
 
 	//SoftwareTimer timer(1000, &changeLed);
-	//HWtimer.attachInterrupt(&changeLed);
-	serial.init();
-	pwmTimer.init();
+	HWtimer.attachInterrupt(&changeLed);
+	
 	PWM pwm(pwmTimer, PWM::CHANNEL_1, PORTA, 6);	
 
 	while(1){
+		//timer.loop();
 		hal.tick(&ms_func);
-		if((ms_counter >= 50) && !test){
-			count++;
+		if((ms_counter >= 50)){
+			if(!test) count++;
+			if(test) count --;
 			ms_counter = 0;
-		}
-		if((ms_counter >= 50) && test){
-			count--;
-			ms_counter = 0;
+			char data[10] = "";
+			sprintf(data, "%d", count);
+			serial.println(data);
 		}
 
-		if(count >= 50){
-			test = 1;
-		}
-		if(count <= 0){
-			test = 0;
-		}
-		//timer.loop();
+		if(count >= 50) test = 1;
+		if(count <= 0)test = 0;
 
 		pwm.setDutyCycle(count);
 	}

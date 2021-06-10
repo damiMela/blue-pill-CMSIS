@@ -23,9 +23,10 @@ class SoftwareTimer{
 public:
 	SoftwareTimer(uint16_t time, void (*function)(void));
 	void loop(void);
+	bool init(void);
 	bool pause(bool state);
-	bool stop();
-	int16_t get();
+	bool stop(void);
+	int16_t get(void);
 	bool set(uint16_t time);
 	
 	//void Close();

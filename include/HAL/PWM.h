@@ -18,6 +18,7 @@ class PWM
 public:
     enum channels{CHANNEL_1, CHANNEL_2, CHANNEL_3, CHANNEL_4};
     PWM(HardwareTimer& timer, uint8_t chn, uint8_t port, uint8_t pin);
+    void init();
     void setDutyCycle(uint8_t dc);
 
 private:

@@ -115,12 +115,14 @@ void GPIO_setInputMode(uint8_t port, uint8_t pin, uint8_t mode) {
         GPIO[port].CRH |= (mode << ((pin - 8) * 4 + CNF_OFFSET));
     else
         GPIO[port].CRL |= (mode << (pin * 4 + CNF_OFFSET));
-
-    if (mode == INPUT_PULLUP) 
-        GPIO[port].ODR |= (1 << pin);
-    else if(mode == INPUT_PULLDOWN)
-        GPIO[port].ODR &= ~(1 << pin);
 }
+
+extern inline void GPIO_setPull(uint8_t port, uint8_t pin, uint8_t set){
+    if (set == HIGH) 
+        GPIO[port].ODR |= (1 << pin);
+    else if(set == LOW)
+        GPIO[port].ODR &= ~(1 << pin);
+} 
 
 /** @brief poner un pin configurado con funcion alternativa en push-pull o
  * opendrain

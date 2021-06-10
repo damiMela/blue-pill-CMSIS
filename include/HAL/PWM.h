@@ -11,15 +11,18 @@
 
 #include <System.h>
 #include <HAL/HardwareTimer.h>
-
 class HardwareTimer;
-class PWM : protected HardwareTimer
+
+class PWM 
 {
 public:
-    PWM(uint8_t timer, uint16_t presc, uint16_t period, uint8_t port, uint8_t pin);
+    enum channels{CHANNEL_1, CHANNEL_2, CHANNEL_3, CHANNEL_4};
+    PWM(HardwareTimer& timer, uint8_t chn, uint8_t port, uint8_t pin);
     void setDutyCycle(uint8_t dc);
 
 private:
+    uint8_t _timerN, _port, _pin, _chn;
+    uint16_t _maxCount;
 
 };
 

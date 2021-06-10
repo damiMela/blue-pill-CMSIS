@@ -2,10 +2,16 @@
 #include <Hardware/DR_GPIO.h>
 #include <Hardware/DR_Timer.h>
 
-PWM::PWM(uint8_t timer, uint16_t presc, uint16_t period, uint8_t port, uint8_t pin) : HardwareTimer(timer, presc, period){
-    GPIO_setDir(port, pin, ALTERNATE);
-    GPIO_setAltMode(port, pin, ALTERNATE_PUSHPULL);
-    GPIO_setMaxOutputSpeed(port, pin, MAX_VEL_50MHZ);
+PWM::PWM(HardwareTimer& timer, uint8_t chn, uint8_t port, uint8_t pin){
+    _pin = pin;
+    _port = port;
+    _chn = chn;
+    _maxCount = timer._period;
+    _timerN = timer._timerN;
+
+    GPIO_setDir(_port, _pin, ALTERNATE);
+    GPIO_setAltMode(_port, _pin, ALTERNATE_PUSHPULL);
+    GPIO_setMaxOutputSpeed(_port, _pin, MAX_VEL_50MHZ);
 
     //config
     TIM_chnEn(_timerN, 0);
@@ -15,10 +21,10 @@ PWM::PWM(uint8_t timer, uint16_t presc, uint16_t period, uint8_t port, uint8_t p
 
 
     //enable timer
-    HardwareTimer::startTimer();
+    timer.startTimer();
 }
 
 void PWM::setDutyCycle(uint8_t dc){
     dc = dc > 100 ? 100 : dc;
-    TIM_setVal(_timerN, 0, (_period/100)*dc);
+    TIM_setVal(_timerN, 0, (_maxCount/100)*dc);
 }

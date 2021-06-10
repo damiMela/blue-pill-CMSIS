@@ -28,13 +28,14 @@ static void (*_timerFunctions[ N_HARDWARE_TIMERS ])(void) = {nullptr};
  	@param [in] 
 	@return Objeto HardwareTimer
 */
-HardwareTimer::HardwareTimer(uint8_t timer, uint16_t presc, uint16_t period, void (*function)(void)){
+HardwareTimer::HardwareTimer(uint8_t timer, uint16_t presc, uint16_t period){
 	_timerN = timer;
-    _timerFunctions[_timerN] = function;
 	_presc = presc;
 	_period = period;
-	
-    switch(_timerN){
+}
+
+void HardwareTimer::init(void){
+	switch(_timerN){
         case _TIM1: 	APB_Enable(APB2, TIM1_APB); break;
         case _TIM2: 	APB_Enable(APB1, TIM2_APB); break;
         case _TIM3: 	APB_Enable(APB1, TIM3_APB); break;
@@ -45,7 +46,9 @@ HardwareTimer::HardwareTimer(uint8_t timer, uint16_t presc, uint16_t period, voi
 	TIM_autoReload_en(_timerN);
 }
 
-void HardwareTimer::init(void){
+void HardwareTimer::attachInterrupt(void (*function)(void)){
+    _timerFunctions[_timerN] = function;
+	
     //Timer Configuration
 	TIM_URS_en(_timerN); //Only over/underflow generates interrupts. if not, UpdateGeneration (UG) interrupts the timer
 	TIM_Interrupt_en(_timerN); //enable update interrupt

@@ -4,6 +4,8 @@
         "dr_pll.h": "c",
         "system.h": "c",
         "dr_uart.h": "c",
-        "stm32f103x6.h": "c"
+        "stm32f103x6.h": "c",
+        "cstdlib": "cpp",
+        "dr_timer.h": "c"
     }
 }

@@ -21,16 +21,22 @@ extern "C" {
 /*!-----------DEFINES Y MACROS PUBLCIAS---------------------------------------------------------------------*/
 enum timers_en{_TIM1, _TIM2, _TIM3};
 enum count_mode{UP_COUNT, DOWN_COUNT};
+
 enum ClockDiv_val{CLKDIV_1, CLKDIV_2, CLKDIV_4};
-enum mode_chn{CHN1_MODE, CHN2_MODE, CHN3_MODE, CHN4_MODE,};
+
+enum chn{CHN1, CHN2, CHN3, CHN4};
 enum chn_sel{ OUTPUT_TIM, INPUT_TI2, INPUT_TI1, INPUT_TRC}; 
 enum encoder_mode{ENC_MODE1 = 1, ENC_MODE2, ENC_MODE3};
 enum PWM_mode{PWM_MODE1=6, PWM_MODE2};
 
 /*!-----------TIPOS DE DATOS PUBLCIAS-----------------------------------------------------------------------*/
-
 /*!-----------VARIABLES GLOBALES PUBLICAS-------------------------------------------------------------------*/
 //extern variables
+TIM_TypeDef *const TIM_REG[] = {
+		((TIM_TypeDef *)TIM1_BASE),
+		((TIM_TypeDef *)TIM2_BASE),
+		((TIM_TypeDef *)TIM3_BASE)
+};
 
 /*!-----------FUNCIONES-------------------------------------------------------------------------------------*/
 void TIM_setPeriod(uint8_t timN, uint16_t val);
@@ -42,21 +48,24 @@ void TIM_URS_en(uint8_t timN);
 void TIM_Interrupt_en(uint8_t timN);
 void TIM_Interrupt_dis(uint8_t timN);
 void TIM_update_config(uint8_t timN);
-void TIM_rst_interrupt_flag(uint8_t timN);
+static void TIM_rst_interrupt_flag(uint8_t timN){
+ 	TIM_REG[timN]->SR &= ~TIM_SR_UIF;
+}
 
-void TIM_setClockDiv(uint8_t timN, uint8_t val);
-void TIM_setActiveHigh(uint8_t timN, uint8_t chnl);
-void TIM_output_en(uint8_t timN, uint8_t chnl);
+void TIM_chnEn(uint8_t timN, uint8_t chnl);
+void TIM_preloadEn(uint8_t timN, uint8_t chn);
+void TIM_setOutputMode(uint8_t timN, uint8_t chn, uint8_t mode);
 void TIM_setVal(uint8_t timN, uint8_t chnl, uint16_t val);
+/*
+void TIM_output_en(uint8_t timN, uint8_t chnl);
 void TIM_setSlaveMode(uint8_t timN, uint8_t val);
 void TIM_setInput_NInv(uint8_t timN, uint8_t chnl);
 uint16_t TIM_getCount(uint8_t timN, uint8_t chnl);
 
+void TIM_setClockDiv(uint8_t timN, uint8_t val);
 void TIM_setSel(uint8_t timN, uint8_t chn, uint8_t sel);
-void TIM_setOutputMode(uint8_t timN, uint8_t chn, uint8_t mode);
 void TIM_setInputPLL(uint8_t timN, uint8_t chn, uint8_t pll);
-void TIM_preloadEn(uint8_t timN, uint8_t chn);
-
+*/
 #ifdef __cplusplus
 }
 #endif

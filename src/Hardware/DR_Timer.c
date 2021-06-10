@@ -23,11 +23,6 @@ extern "C" {
 
 
 /*!-----------VARIABLES GLOBALES PRIVADAS-------------------------------------------------------------------*/
-TIM_TypeDef *const TIM_REG[] = {
-		((TIM_TypeDef *)TIM1_BASE),
-		((TIM_TypeDef *)TIM2_BASE),
-		((TIM_TypeDef *)TIM3_BASE)
-};
 
 
 /*!-----------VARIABLES GLOBALES PUBLICAS-------------------------------------------------------------------*/
@@ -74,26 +69,43 @@ extern inline void TIM_update_config(uint8_t timN){
 	TIM_REG[timN]->EGR |= TIM_EGR_UG;
 }
 
-extern inline void TIM_rst_interrupt_flag(uint8_t timN){
-	TIM_REG[timN]->SR &= ~TIM_SR_UIF;
+
+
+//for PWM
+extern inline void TIM_chnEn(uint8_t timN, uint8_t chnl){
+	TIM_REG[timN]->CCER |= TIM_CCER_CC1E << (4 * chnl);
+
 }
 
+void TIM_preloadEn(uint8_t timN, uint8_t chn){
+	switch(chn){
+	case CHN1:		TIM_REG[timN]->CCMR1 |= TIM_CCMR1_OC1CE;	break;
+	case CHN2:		TIM_REG[timN]->CCMR1 |= TIM_CCMR1_OC2CE;	break;
+	case CHN3:		TIM_REG[timN]->CCMR2 |= TIM_CCMR2_OC3CE;	break;
+	case CHN4:		TIM_REG[timN]->CCMR2 |= TIM_CCMR2_OC4CE;	break;
+	}	
+}
+
+void TIM_setOutputMode(uint8_t timN, uint8_t chn, uint8_t mode){
+	switch(chn){
+	case CHN1:		TIM_REG[timN]->CCMR1 |= (mode << TIM_CCMR1_OC1M_Pos);	break;
+	case CHN2:		TIM_REG[timN]->CCMR1 |= (mode << TIM_CCMR1_OC2M_Pos);	break;
+	case CHN3:		TIM_REG[timN]->CCMR2 |= (mode << TIM_CCMR2_OC3M_Pos);	break;
+	case CHN4:		TIM_REG[timN]->CCMR2 |= (mode << TIM_CCMR2_OC4M_Pos);	break;
+	}
+}
+
+inline void TIM_setVal(uint8_t timN, uint8_t chn, uint16_t val){
+	switch(chn){
+	case CHN1:		TIM_REG[timN]->CCR1 = val;		break;
+	case CHN2:		TIM_REG[timN]->CCR2 = val;		break;
+	case CHN3:		TIM_REG[timN]->CCR3 = val;		break;
+	case CHN4:		TIM_REG[timN]->CCR4 = val;		break;
+	}
+
+}
 
 /*
-//for PWM
-inline void TIM_setActiveHigh(uint8_t timN, uint8_t chnl){
-	TIM_REG[timN]->CCER &= TIM_CCER
-	//TIM_REG[timN]->CCER &= (1 << (CCER_POLAR_BIT + 4*chnl));
-}
-
-inline void TIM_setVal(uint8_t timN, uint8_t chnl, uint16_t val){
-	TIM_REG[timN]->CCR[chnl] = val;
-}
-
-inline void TIM_output_en(uint8_t timN, uint8_t chnl){
-	TIM_REG[timN]->CCER &= (1 << (CCER_OUT_EN_BIT + 4*chnl));
-}
-
 inline void TIM_setClockDiv(uint8_t timN, uint8_t val){
 	TIM_REG[timN]->CR1 &= ~TIM_CR1_CKD;
 	TIM_REG[timN]->CR1 |= (val << TIM_CR1_CKD_Pos);
@@ -122,17 +134,9 @@ void TIM_setSel(uint8_t timN, uint8_t chn, uint8_t sel){
 	case CHN2_MODE:		TIM_REG[timN]->CCMR1_OUT.chnB_sel = sel;	break;
 	case CHN3_MODE:		TIM_REG[timN]->CCMR2_OUT.chnA_sel = sel;	break;
 	case CHN4_MODE:		TIM_REG[timN]->CCMR2_OUT.chnB_sel = sel;	break;
-	}
+	} 
 }
 
-void TIM_setOutputMode(uint8_t timN, uint8_t chn, uint8_t mode){
-	switch(chn){
-	case CHN1_MODE:		TIM_REG[timN]->CCMR1_OUT.chnA_mode = mode;	break;
-	case CHN2_MODE:		TIM_REG[timN]->CCMR1_OUT.chnB_mode = mode;	break;
-	case CHN3_MODE:		TIM_REG[timN]->CCMR2_OUT.chnA_mode = mode;	break;
-	case CHN4_MODE:		TIM_REG[timN]->CCMR2_OUT.chnB_mode = mode;	break;
-	}
-}
 
 void TIM_setInputPLL(uint8_t timN, uint8_t chn, uint8_t pll){
 	switch(chn){
@@ -143,13 +147,6 @@ void TIM_setInputPLL(uint8_t timN, uint8_t chn, uint8_t pll){
 	}
 }
 
-void TIM_preloadEn(uint8_t timN, uint8_t chn){
-	switch(chn){
-	case CHN1_MODE:		TIM_REG[timN]->CCMR1_OUT.chnA_preLd_en = 1;	break;
-	case CHN2_MODE:		TIM_REG[timN]->CCMR1_OUT.chnA_preLd_en = 1;	break;
-	case CHN3_MODE:		TIM_REG[timN]->CCMR1_OUT.chnA_preLd_en = 1;	break;
-	case CHN4_MODE:		TIM_REG[timN]->CCMR1_OUT.chnA_preLd_en = 1;	break;
-	}
 
 }*/
 

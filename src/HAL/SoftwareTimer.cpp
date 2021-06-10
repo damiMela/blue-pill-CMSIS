@@ -53,11 +53,6 @@ SoftwareTimer::SoftwareTimer(uint16_t time, void (*function)(void)){
 	}
 }
 
-
-void SoftwareTimer::start(void){
-
-}
-
 void SoftwareTimer::loop(void){
 	if(_timerCounters[_index] == 0){
 		_timerFunctions[_index] = _function;

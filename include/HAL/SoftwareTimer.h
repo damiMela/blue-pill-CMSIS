@@ -22,7 +22,6 @@
 class SoftwareTimer{
 public:
 	SoftwareTimer(uint16_t time, void (*function)(void));
-	void start(void);
 	void loop(void);
 	bool pause(bool state);
 	bool stop();

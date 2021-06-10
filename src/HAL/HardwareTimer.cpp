@@ -8,6 +8,7 @@
 
 /*!-----------INCLUDES PRIVADOS-----------------------------------------------------------------------------*/
 #include <HAL/HardwareTimer.h>
+#include <Hardware/DR_Timer.h>
 #include <Hardware/DR_PLL.h>
 /*!-----------DEFINES Y MACROS PRIVADOS---------------------------------------------------------------------*/
 
@@ -27,35 +28,44 @@ static void (*_timerFunctions[ N_HARDWARE_TIMERS ])(void) = {nullptr};
  	@param [in] 
 	@return Objeto HardwareTimer
 */
-HardwareTimer::HardwareTimer(uint8_t timer, uint16_t presc, uint16_t val, void (*function)(void)){
+HardwareTimer::HardwareTimer(uint8_t timer, uint16_t presc, uint16_t period, void (*function)(void)){
 	_timerN = timer;
     _timerFunctions[_timerN] = function;
 	_presc = presc;
-	_val = val;
-    start();
-}
-
-void HardwareTimer::start(void){
-    //Timer Cnfiguration
+	_period = period;
+	
     switch(_timerN){
         case _TIM1: 	APB_Enable(APB2, TIM1_APB); break;
         case _TIM2: 	APB_Enable(APB1, TIM2_APB); break;
         case _TIM3: 	APB_Enable(APB1, TIM3_APB); break;
     }
-
+	
 	TIM_setPresc(_timerN, _presc);
-	TIM_setPeriod(_timerN, _val);
+	TIM_setPeriod(_timerN, _period);
 	TIM_autoReload_en(_timerN);
+}
+
+void HardwareTimer::init(void){
+    //Timer Configuration
 	TIM_URS_en(_timerN); //Only over/underflow generates interrupts. if not, UpdateGeneration (UG) interrupts the timer
 	TIM_Interrupt_en(_timerN); //enable update interrupt
-	TIM_update_config(_timerN); //Update generation. After everything is set, configures the timer.
-	TIM_counter_en(_timerN);
 
     switch(_timerN){
         case _TIM1: 	NVIC_EnableIRQ(TIM1_UP_IRQn);   break;
         case _TIM2: 	NVIC_EnableIRQ(TIM2_IRQn);      break;
         case _TIM3: 	NVIC_EnableIRQ(TIM3_IRQn);      break;
     }
+
+	startTimer();
+}
+
+void HardwareTimer::setCallbackFunction(void (*function)(void)){
+	_timerFunctions[_timerN] = function;
+}
+
+void HardwareTimer::startTimer(){
+	TIM_update_config(_timerN); //Update generation. After everything is set, configures the timer.
+	TIM_counter_en(_timerN);
 }
 
 #ifdef __cplusplus

@@ -1,17 +1,20 @@
-#ifndef HARDWARETIMER_H
-#define HARDWARETIMER_H
+#ifndef HAL_HARDWARETIMER_H
+#define HAL_HARDWARETIMER_H
 
-#include <Hardware/DR_Timer.h>
+#include <System.h>
 
 class HardwareTimer
 {
 public:
-    HardwareTimer(uint8_t timer, uint16_t presc, uint16_t val, void (*function)(void));
-    void start(void);
+    enum Timers {TIMER1, TIMER2, TIMER3};
+    HardwareTimer(uint8_t timer, uint16_t presc, uint16_t val, void (*function)(void)=nullptr);
+    void init(void);
+    void setCallbackFunction(void (*function)(void));
 
-private:
+protected:
+    void startTimer(); 
     uint8_t _timerN;
-    uint16_t _presc, _val;
+    uint16_t _presc, _period;
 };
 
 #endif

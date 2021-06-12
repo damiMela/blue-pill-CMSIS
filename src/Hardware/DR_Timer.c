@@ -102,7 +102,24 @@ inline void TIM_setVal(uint8_t timN, uint8_t chn, uint16_t val){
 	case CHN3:		TIM_REG[timN]->CCR3 = val;		break;
 	case CHN4:		TIM_REG[timN]->CCR4 = val;		break;
 	}
+}
 
+//Encoder
+void TIM_setInputMapping(uint8_t timN, uint8_t chn, uint8_t map){
+	switch(chn){
+	case CHN1:		TIM_REG[timN]->CCMR1 |= (map << TIM_CCMR1_CC1S_Pos);	break;
+	case CHN2:		TIM_REG[timN]->CCMR1 |= (map << TIM_CCMR1_CC2S_Pos);	break;
+	case CHN3:		TIM_REG[timN]->CCMR2 |= (map << TIM_CCMR2_CC3S_Pos);	break;
+	case CHN4:		TIM_REG[timN]->CCMR2 |= (map << TIM_CCMR2_CC4S_Pos);	break;
+	}
+}
+
+extern inline void TIM_setPolarity(uint8_t timN, uint8_t chn){
+	TIM_REG[timN]->CCER |= TIM_CCER_CC1P<< (4 * chn + 1);	
+}
+
+void TIM_setSlaveMode(uint8_t timN, uint8_t chn, uint8_t mode){
+	TIM_REG[timN]->SMCR |= (mode << TIM_SMCR_SMS_Pos);
 }
 
 /*

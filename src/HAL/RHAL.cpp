@@ -21,6 +21,7 @@ RHAL::RHAL(){
     APB_Enable(APB2, GPIOA_APB);
     APB_Enable(APB2, GPIOB_APB);
     APB_Enable(APB2, GPIOC_APB);
+	APB_Enable(APB2, AFIO_APB);
 
 	main_flags.Systick_ms = 0;
 }

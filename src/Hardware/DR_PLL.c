@@ -105,8 +105,10 @@ extern inline void CLK_setSystemCLK(uint8_t src){
 extern inline void APB_Enable(uint8_t reg, uint8_t bit){
 	if(reg == APB1)
 		RCC->APB1ENR |= (1 << bit);
-	else
+	else if(reg == APB2)
 		RCC->APB2ENR |= (1 << bit);
+	else
+		RCC->AHBENR |= (1<< bit);
 }
 
 /** @brief 	Deshablitar los perifericos

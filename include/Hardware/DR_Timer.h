@@ -25,10 +25,10 @@ enum count_mode{UP_COUNT, DOWN_COUNT};
 enum ClockDiv_val{CLKDIV_1, CLKDIV_2, CLKDIV_4};
 
 enum chn{CHN1, CHN2, CHN3, CHN4};
-enum chn_sel{ OUTPUT_TIM, INPUT_TI2, INPUT_TI1, INPUT_TRC}; 
+enum chn_sel{ OUTPUT_TIM, INPUT_TI2, INPUT_TI1, INPUT_TRC};
 enum encoder_mode{ENC_MODE1 = 1, ENC_MODE2, ENC_MODE3};
 enum PWM_mode{PWM_MODE1=6, PWM_MODE2};
-
+enum slave_mode{SLAVE_DISABLED, SLAVE_ENC1, SLAVE_ENC2, SLAVE_ENC3, SLAVE_RST, SLAVE_GATE, SLAVE_TRIG, SLAVE_EXTCLK};
 /*!-----------TIPOS DE DATOS PUBLCIAS-----------------------------------------------------------------------*/
 /*!-----------VARIABLES GLOBALES PUBLICAS-------------------------------------------------------------------*/
 //extern variables

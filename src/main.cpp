@@ -11,30 +11,31 @@
 //must be included last
 #include <HAL/RHAL.h>
 
-#include <Hardware/DR_Timer.h>
+#include <Hardware/DR_ADC.h>
+#include <Hardware/DR_GPIO.h>
 #include <Hardware/DR_PLL.h>
+#include <Hardware/DR_DMA.h>
 
 
 //Pin declaration
 OutputPin led(PORTC, 13);
-InputPin btn(PORTB, 10, InputPin::PULLUP);
+//InputPin btn(PORTB, 1);
 Serial serial(UART1, baud_9600);
 HardwareTimer pwmTimer(HardwareTimer::TIMER3, 72, 100);
 HardwareTimer HWtimer(HardwareTimer::TIMER2, 7200, 10000);
 
 //Variable declaration
 volatile uint32_t ms_counter = 0;
-volatile uint8_t state = 0;
-volatile uint8_t test = 0;
-uint8_t count = 0;
+uint16_t res[2] = {0, 0};
 
 void ms_func(void){	
 	ms_counter++; 
 }
 
-void changeLed(void){
-	led = state;
-	state = !state;
+void sendVal(void){
+	char msg[10] = "";
+	sprintf(msg, "%hu\t%hu\n", res[0], res[1]);
+	serial.print(msg);
 }
 
 int main(){
@@ -42,35 +43,48 @@ int main(){
 	RHAL hal;	
 
 	//Pin initialization
-	led.init();
-	btn.init();
-	HWtimer.init();
 	serial.init();
-	
+	SoftwareTimer timer(100, &sendVal);
 
-	//SoftwareTimer timer(1000, &changeLed);
-	HWtimer.attachInterrupt(&changeLed);
+ 	GPIO_setDir(PORTB, 1, INPUT);
+	GPIO_setInputMode(PORTB, 1, INPUT_PULLDOWN);
+
+	APB_Enable(APB2, ADC1_APB);
+	APB_Enable(AHB, DMA1_APB);
 	
-	PWM pwm(pwmTimer, PWM::CHANNEL_1, PORTA, 6);	
+	ADC_setSamplingRate(9, CYCLES_71_5);
+	ADC_setSamplingRate(8, CYCLES_71_5);
+	ADC_setConvSequence(9, 0);
+	ADC_setConvSequence(8, 1);
+	ADC_setConvLenght(2);
+
+	ADC_ScanModeEnable();
+	ADC_DMAEnable();
+
+	DMA_setPeriphAddr(0, (uint32_t)&ADC1->DR);
+	DMA_setMemAddr(0, (uint32_t)res);
+	DMA_setDataN(0, 2);
+	DMA_setCircularMode(0);
+	DMA_incrementMemAddr(0);
+	DMA_setMemSize(0, DMA_16_BITS);
+	DMA_setPerihpSize(0, DMA_16_BITS);
+	DMA_enable(0);
+
+	ADC_contConvEnable();
+	ADC_on();
+	for(uint32_t i = 0; i < 72000; i++);
+	ADC_on();	
+	for(uint32_t i = 0; i < 72000; i++);
+	ADC_caibrate();
+	for(uint32_t i = 0; i < 144000; i++);
+
 
 	while(1){
-		//timer.loop();
 		hal.tick(&ms_func);
-		if((ms_counter >= 50)){
-			if(!test) count++;
-			if(test) count --;
-			ms_counter = 0;
-			char data[10] = "";
-			sprintf(data, "%d", count);
-			serial.println(data);
-		}
-
-		if(count >= 50) test = 1;
-		if(count <= 0)test = 0;
-
-		pwm.setDutyCycle(count);
+		timer.loop();
 	}
 }
+
 
 
 

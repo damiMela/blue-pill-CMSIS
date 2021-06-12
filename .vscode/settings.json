@@ -6,6 +6,7 @@
         "dr_uart.h": "c",
         "stm32f103x6.h": "c",
         "cstdlib": "cpp",
-        "dr_timer.h": "c"
+        "dr_timer.h": "c",
+        "dr_dma.h": "c"
     }
 }

@@ -16,7 +16,7 @@ extern "C" {
 #endif
 
 /*!-----------DEFINES Y MACROS PUBLCIAS---------------------------------------------------------------------*/
-enum{APB1,APB2};
+enum{APB1,APB2,AHB};
 
 enum APB2_bits{
 	AFIO_APB = 0,
@@ -54,6 +54,9 @@ enum APB1_bits{
 	DAC_APB = 29
 };
 
+enum AHB_bits{
+	DMA1_APB = 0,
+};
 
 enum APB_divFactor{APB_DIV_NONE, APB_DIV_2 = 4, APB_DIV_4, APB_DIV_8, APB_DIV_16};
 enum ADC_divFactor{ADC_DIV_2, ADC_DIV_4, ADC_DIV_6, ADC_DIV_8};

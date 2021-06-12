@@ -7,6 +7,7 @@
         "stm32f103x6.h": "c",
         "cstdlib": "cpp",
         "dr_timer.h": "c",
-        "dr_dma.h": "c"
+        "dr_dma.h": "c",
+        "dr_adc.h": "c"
     }
 }

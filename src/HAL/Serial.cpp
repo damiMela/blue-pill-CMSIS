@@ -73,7 +73,7 @@ void Serial::pushTX(uint8_t data){
 }
 
 
-void Serial::print(char* msj){
+void Serial::print(const char* msj){
 	uint32_t i = 0;
 	while(msj[i] > 0){
 		pushTX(msj[i]);
@@ -100,7 +100,7 @@ void Serial::println(uint32_t num){
     pushTX('\n');
 }
 
-void Serial::println(char* msj){
+void Serial::println(const char* msj){
     print(msj);
     pushTX('\n');
 }

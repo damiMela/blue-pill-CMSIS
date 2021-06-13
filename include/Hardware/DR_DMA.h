@@ -11,22 +11,27 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
+
 #include <System.h>
 /*!-----------DEFINES Y MACROS PUBLCIAS---------------------------------------------------------------------*/
-enum DMA_data_size{DMA_8_BITS, DMA_16_BITS, DMA_32_BITS};
+enum DMA_data_size {
+    DMA_8_BITS,
+    DMA_16_BITS,
+    DMA_32_BITS
+};
 /*!-----------TIPOS DE DATOS PUBLCIAS-----------------------------------------------------------------------*/
 
 /*!-----------VARIABLES GLOBALES PUBLICAS-------------------------------------------------------------------*/
 //extern variables
 
 /*!-----------FUNCIONES-------------------------------------------------------------------------------------*/
-void DMA_setPeriphAddr(uint8_t chn, volatile void *periph);
-void DMA_setMemAddr(uint8_t chn, volatile void *mem);
+void DMA_setPeripheralAddress(uint8_t chn, volatile void *periph);
+void DMA_setMemoryAddress(uint8_t chn, volatile void *mem);
 void DMA_setDataN(uint8_t chn, uint8_t num);
-void DMA_setCircularMode(uint8_t chn);
-void DMA_incrementMemAddr(uint8_t chn);
-void DMA_setPerihpSize(uint8_t chn, uint8_t size);
-void DMA_setMemSize(uint8_t chn, uint8_t size);
+void DMA_enableCircularMode(uint8_t chn);
+void DMA_enableIncrementMemoryAddress(uint8_t chn);
+void DMA_setPeripheralDataSize(uint8_t chn, uint8_t size);
+void DMA_setMemoryDataSize(uint8_t chn, uint8_t size);
 void DMA_enable(uint8_t chn);
 
 #ifdef __cplusplus

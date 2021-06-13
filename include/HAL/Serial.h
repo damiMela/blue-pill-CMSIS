@@ -12,16 +12,17 @@
 
 class Serial{
 private:
-	uint8_t _uart_n, tx_pin, rx_pin, tx_port, rx_port;
-	uint16_t _baudRate;
+	static uint8_t _uart_n, _tx_pin, _rx_pin, _tx_port, _rx_port;
+	static uint16_t _baudRate;
 	
 public:
-	Serial(uint8_t uart_n, uint16_t baudRate);
-	void init();
-	int32_t popRX(void);
-	void pushTX(uint8_t dato);
-	void print(char* msj);
-	void println(char* msj);
+	static void init(uint32_t baudrate, uint8_t uartN = UART1);
+	static int32_t popRX(void);
+	static void pushTX(uint8_t dato);
+	static void print(char* msj);
+	static void print(uint32_t num);
+	static void println(char* msj);
+	static void println(uint32_t num);
 
 };
 

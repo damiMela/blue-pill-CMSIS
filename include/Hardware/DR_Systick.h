@@ -19,11 +19,10 @@ extern "C" {
 /*!-----------TIPOS DE DATOS PUBLCIAS-----------------------------------------------------------------------*/
                                       /* Variable to store millisecond ticks */
 /*!-----------VARIABLES GLOBALES PUBLICAS-------------------------------------------------------------------*/
-extern uint32_t msTicks;
+extern volatile uint32_t msTicks;
 
 /*!-----------FUNCIONES-------------------------------------------------------------------------------------*/
 extern void SysTick_Handler(void);
-extern uint8_t test;
 
 #ifdef __cplusplus
 }

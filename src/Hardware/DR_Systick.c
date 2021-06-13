@@ -14,7 +14,7 @@ extern "C" {
 #endif
 
 /*!-----------DEFINES Y MACROS PRIVADOS---------------------------------------------------------------------*/
-
+volatile uint32_t msTicks = 0;
 
 
 /*!-----------TIPOS DE DATOS PRIVADOS-----------------------------------------------------------------------*/
@@ -28,7 +28,8 @@ extern "C" {
  *
  */
 void SysTick_Handler(void) {   /* startup file startup_stm32f103xx.s for SysTick vector */ 
-  main_flags.Systick_ms = 1;	//pongo flag en 1 para avisar que pasó 1ms                                         
+  main_flags.Systick_ms = 1;	//pongo flag en 1 para avisar que pasó 1ms   
+  msTicks++;                                      
 }
 
 #ifdef __cplusplus

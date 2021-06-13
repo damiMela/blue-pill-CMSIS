@@ -65,3 +65,13 @@ void RHAL::tick(void (* func )(void)){
 
 	func();
 }
+
+
+void RHAL::delay(uint32_t ms){
+	uint32_t finishMs = msTicks + ms;
+	while(msTicks <= finishMs);
+}
+
+uint32_t RHAL::millis(void){
+	return(msTicks);
+}

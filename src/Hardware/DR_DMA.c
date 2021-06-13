@@ -16,11 +16,11 @@ DMA_Channel_TypeDef *const DMA_CHN[] = {
 };
 
 /*!-----------FUNCIONES-------------------------------------------------------------------------------------*/
-extern inline void DMA_setPeriphAddr(uint8_t chn, uint32_t periph){
+extern inline void DMA_setPeriphAddr(uint8_t chn, volatile void *periph){
    DMA_CHN[chn]->CPAR = (uint32_t)periph;
 }
 
-extern inline void DMA_setMemAddr(uint8_t chn, uint32_t mem){
+extern inline void DMA_setMemAddr(uint8_t chn, volatile void *mem){
     DMA_CHN[chn]->CMAR = (uint32_t)mem;
 }
 

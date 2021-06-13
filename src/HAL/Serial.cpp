@@ -4,47 +4,51 @@
  *  Created on: 9 jun. 2021
  *      Author: Damian Melamed
  */
-#include "HAL/Serial.h"
-#include "Hardware/DR_GPIO.h"
+#include <HAL/Serial.h>
+#include <HAL/AlternatePin.h>
+#include <HAL/InputPin.h>
 #include <Hardware/DR_PLL.h>
+uint8_t Serial::_uart_n = 0;
+uint8_t Serial::_tx_pin = 0;
+uint8_t Serial::_rx_pin = 0;
+uint8_t Serial::_tx_port = 0;
+uint8_t Serial::_rx_port = 0;
+uint16_t Serial::_baudRate = 0;
 
-Serial::Serial(uint8_t uart_n, uint16_t baudRate){
-    _uart_n = uart_n;
-    _baudRate = baudRate;
-
-    if(uart_n == UART1){
-        tx_port = PORTA;
-        tx_pin = 9;
-
-        rx_port = PORTA;
-        rx_pin = 10;
+void Serial::init(uint32_t baudrate, uint8_t uartN){
+    _uart_n = uartN;
+    if(_uart_n == UART1){
+        _tx_port = PORTA;       _tx_pin = 9;
+        _rx_port = PORTA;       _rx_pin = 10;
+        APB_Enable(APB2, USART1_APB);
     }
-}
+    else{
+        _tx_port = PORTA;       _tx_pin = 2;
+        _rx_port = PORTA;       _rx_pin = 3;
+        APB_Enable(APB1, USART2_APB);
+    }
 
-void Serial::init(){
-    if(_uart_n == UART1)  APB_Enable(APB2, USART1_APB);
-    else                APB_Enable(APB1, USART2_APB);
+    if(baudrate == 9600) _baudRate = baud_9600;
+    else if(baudrate == 115200) _baudRate = baud_115200;
+    else _baudRate = baud_9600;;
 
-    GPIO_setDir(tx_port, tx_pin, ALTERNATE);
-    GPIO_setAltMode(tx_port, tx_pin, ALTERNATE_PUSHPULL);
-    GPIO_setMaxOutputSpeed(tx_port, tx_pin, MAX_VEL_50MHZ);
+    AlternatePin::paramInit(_tx_port, _tx_pin, AlternatePin::PUSH_PULL, MAX_VEL_50MHZ);
+    InputPin::paramInit(_rx_port, _rx_pin, InputPin::FLOATING);
     
-    GPIO_setDir(rx_port, rx_pin, INPUT);
-    GPIO_setInputMode(rx_port, rx_pin, INPUT_FLOATING);
-    
+    //config UART
     UART_setBaudRate(_uart_n, _baudRate);
-	//UART_setLenght(_uart_n, UART_LEN_8BITS);
-    //UART_setParity(_uart_n, UART_PAR_NONE);
-    //UART_setStopBits(_uart_n, UART_STOP_1B);
+    UART_enableInterrupts(_uart_n);
+	UART_setLenght(_uart_n, UART_LEN_8BITS);
+    UART_setParity(_uart_n, UART_PAR_NONE);
+    UART_setStopBits(_uart_n, UART_STOP_1B);
+
+    //clean buffer
     tx1_str.in = 0; tx1_str.out = 0; tx1_restart = 0;    
     rx1_str.in = 0; rx1_str.out = 0;    
 
-    UART_enableInterrupts(_uart_n);
     if(_uart_n == UART1)    NVIC_EnableIRQ(USART1_IRQn);
     if(_uart_n == UART2)    NVIC_EnableIRQ(USART2_IRQn);
     UART_enable(_uart_n);
-
-    
 }
 
 int32_t Serial::popRX(){
@@ -75,6 +79,25 @@ void Serial::print(char* msj){
 		pushTX(msj[i]);
 		i++;
 	}
+}
+
+void Serial::print(uint32_t num){
+    uint8_t i = 0;
+    char temp[16] = ""; //32bit number has 15 digits;
+	while(num || (i<=0)){
+        temp[i] = num % 10;
+        num /= 10;
+        i++;
+	}
+    while(i){
+        pushTX(temp[i-1] + '0');
+        i--;
+    }
+}
+
+void Serial::println(uint32_t num){
+    print(num);
+    pushTX('\n');
 }
 
 void Serial::println(char* msj){

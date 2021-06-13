@@ -41,8 +41,20 @@ extern inline void ADC_setConvLenght(uint8_t adcN, uint8_t len){
 }
 
 extern inline void ADC_on(uint8_t adcN){
-    if(adcN == _ADC1)   ADC1->CR2 |= ADC_CR2_ADON;
-    else                ADC2->CR2 |= ADC_CR2_ADON;
+    if(adcN == _ADC1){
+        ADC1->CR2 |= ADC_CR2_ADON;
+        ADC1->CR2 |= ADC_CR2_RSTCAL;
+        while (ADC1->CR2 & ADC_CR2_RSTCAL) continue;
+        ADC1->CR2 |= ADC_CR2_CAL;
+        while (ADC1->CR2 & ADC_CR2_CAL) continue;
+    }
+    else{
+        ADC2->CR2 |= ADC_CR2_ADON;
+        ADC2->CR2 |= ADC_CR2_RSTCAL;
+        while (ADC2->CR2 & ADC_CR2_RSTCAL) continue;
+        ADC2->CR2 |= ADC_CR2_CAL;
+        while (ADC2->CR2 & ADC_CR2_CAL) continue;
+    }
 }
 
 extern inline void ADC_caibrate(uint8_t adcN){

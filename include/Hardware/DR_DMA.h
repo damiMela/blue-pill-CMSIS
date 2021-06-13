@@ -20,8 +20,8 @@ enum DMA_data_size{DMA_8_BITS, DMA_16_BITS, DMA_32_BITS};
 //extern variables
 
 /*!-----------FUNCIONES-------------------------------------------------------------------------------------*/
-void DMA_setPeriphAddr(uint8_t chn, uint32_t periph);
-void DMA_setMemAddr(uint8_t chn, uint32_t mem);
+void DMA_setPeriphAddr(uint8_t chn, volatile void *periph);
+void DMA_setMemAddr(uint8_t chn, volatile void *mem);
 void DMA_setDataN(uint8_t chn, uint8_t num);
 void DMA_setCircularMode(uint8_t chn);
 void DMA_incrementMemAddr(uint8_t chn);

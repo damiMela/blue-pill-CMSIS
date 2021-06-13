@@ -20,6 +20,8 @@ class RHAL{
 public:
 	RHAL();
 	void tick(void (* func )(void));
+	static void delay(uint32_t ms);
+	static uint32_t millis(void);
 
 private:
 	void _initClock();

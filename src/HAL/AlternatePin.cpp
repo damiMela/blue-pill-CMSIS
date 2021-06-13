@@ -6,13 +6,9 @@
  */
 
 #include <HAL/AlternatePin.h>
-#include <Hardware/DR_GPIO.h>
 
-AlternatePin::AlternatePin(uint8_t port, uint8_t pin, Mode mode) : Pin(port, pin) {
-	_mode = mode;
-}
-
-void AlternatePin::init() {
-	GPIO_setDir(_port, _pin, ALTERNATE);
-	GPIO_setAltMode(_port, _pin, ALTERNATE_PUSHPULL);
+void AlternatePin::paramInit(uint8_t port, uint8_t pin, Mode mode, uint8_t maxVel){
+	GPIO_setDir(port, pin, ALTERNATE);
+	GPIO_setAltMode(port, pin, mode);
+	GPIO_setMaxOutputSpeed(port, pin, maxVel);
 }

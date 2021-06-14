@@ -10,9 +10,13 @@ bool ADC::async = false;
 
 void ADC::setupDualModeScan(const char* channelsADC1, const char* channelsADC2, uint8_t sampleRate, bool async, volatile void* address) {
     enablePeripherals(true, true);
+
     uint8_t channels = setupSequence(_ADC1, channelsADC1, sampleRate);
     if (channels != setupSequence(_ADC2, channelsADC2, sampleRate))  // La cantidad de channels en ambos no es la misma.
         return;                                                      // Maybe setear un error flag en los system flags?
+
+    ADC_enableScanMode(_ADC1);
+    ADC_enableScanMode(_ADC2);
 
     ADC_enableDualMode();
     ADC_enableDMA(_ADC1);
@@ -21,13 +25,16 @@ void ADC::setupDualModeScan(const char* channelsADC1, const char* channelsADC2, 
     ADC_enableActivateBySoftware(_ADC1);
     ADC_enableActivateBySoftware(_ADC2);
 
+    ADC_enableContinuousConversion(_ADC1);
+    ADC_enableContinuousConversion(_ADC2);
+
     if (async) enableInterrupt();
     ADC::async = async;
 
+    setupDMA(address, DMA_32_BITS, channels);
+
     ADC_enable(_ADC1);
     ADC_enable(_ADC2);
-
-    setupDMA(address, DMA_32_BITS, channels);
 }
 
 void ADC::readAll() {

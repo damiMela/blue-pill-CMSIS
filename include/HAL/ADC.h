@@ -8,8 +8,8 @@ extern "C" typedef void setConversionEnded();
 class ADC {
    public:
     static void setupDualModeScan(const char* channelsADC1, const char* channelsADC2, uint8_t sampleRate, bool async, volatile void* address);
-    static void setupSingleMode(char* channelsADC1, uint8_t sampleRate);
-    static void setupContinuousMode(char* channelsADC1, uint8_t sampleRate);
+    static void setupSingleModeScan(const char* channelsADC1, uint8_t sampleRate, bool async, volatile void* address);
+    static void setupContinuousMode(const char* channelsADC1, uint8_t sampleRate);
     static void readAll();
 
    private:

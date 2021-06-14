@@ -60,10 +60,6 @@ extern inline void ADC_startConversion(uint8_t adcN) {
     ADC[adcN]->CR2 |= ADC_CR2_SWSTART;
 }
 
-extern inline uint8_t ADC_conversionEnded(uint8_t adcN) {
-    return (ADC[adcN]->SR & ADC_SR_EOC);
-}
-
 extern inline void ADC_clearEOCFlag(uint8_t adcN) {
     ADC[adcN]->SR &= ~ADC_SR_EOC;
 }

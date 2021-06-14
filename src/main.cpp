@@ -17,10 +17,15 @@
 
 //Hardware declaration
 OutputPin led(PORTC, 13, OutputPin::PUSH_PULL);
+InputPin a1(PORTB, 0, InputPin::PULLDOWN);
+InputPin a2(PORTB, 1, InputPin::PULLDOWN);
+InputPin a3(PORTA, 6, InputPin::PULLDOWN);
+InputPin a4(PORTA, 7, InputPin::PULLDOWN);
 
 //Variable declaration
 
 volatile uint32_t res[2];
+volatile uint16_t res_2[3];
 volatile uint8_t irr = 0;
 
 void ms_func(void) {
@@ -29,23 +34,19 @@ void ms_func(void) {
 void sendVal(void) {
     led = !led();
     ADC::readAll();
-    //while (!SysFlag_ADC()) continue;
-    uint32_t buffer = res[0];  // PARA NO MOLESTAR AL DMA
+    while (!SysFlag_ADC()) continue;
+    uint32_t buffer = res_2[0];  // PARA NO MOLESTAR AL DMA
 
-    uint16_t val1, val2;
-    val2 = buffer >> 16;
-    val1 = buffer & 0xFFFF;
-    Serial::printBlocking(val1);
+    Serial::printBlocking(buffer);
     Serial::printBlocking("\t");
-    Serial::printBlocking(val2);
-    Serial::printBlocking("\n");
 
-    buffer = res[1];
-    val2 = buffer >> 16;
-    val1 = buffer & 0xFFFF;
-    Serial::printBlocking(val1);
+    buffer = res_2[1];
+    Serial::printBlocking(buffer);
     Serial::printBlocking("\t");
-    Serial::printBlocking(val2);
+
+    buffer = res_2[2];
+    Serial::printBlocking(buffer);
+    Serial::printBlocking("\t");
     Serial::printBlocking("\n");
 }
 
@@ -55,18 +56,18 @@ int main() {
 
     //timer initialization
     Serial::init(9600);
-    SoftwareTimer timer(1000, &sendVal);
+    SoftwareTimer timer(300, &sendVal);
 
     led.init();
     led = 1;
 
     //set adc pins to input push-pull (is done by setting input pulldown)
-    GPIO_setDir(PORTB, 1, INPUT);
-    GPIO_setInputMode(PORTB, 1, INPUT_PULLDOWN);
-    GPIO_setDir(PORTB, 0, INPUT);
-    GPIO_setInputMode(PORTB, 0, INPUT_PULLDOWN);
-
-    ADC::setupDualModeScan("89", "98", CYCLES_28_5, false, &res);
+    a1.init();
+    a2.init();
+    a3.init();
+    a4.init();
+    //ADC::setupDualModeScan("89", "98", CYCLES_28_5, false, &res);
+    ADC::setupSingleModeScan("897", CYCLES_28_5, true, &res_2);
 
     for (uint32_t i = 0; i < 7200000; i++) __NOP();  //delay para esperar a que se inicialize el serial console
     Serial::printBlocking("Hola!\n");

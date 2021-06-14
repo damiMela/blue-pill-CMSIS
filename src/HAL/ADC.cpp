@@ -37,6 +37,24 @@ void ADC::setupDualModeScan(const char* channelsADC1, const char* channelsADC2, 
     ADC_enable(_ADC2);
 }
 
+void ADC::setupSingleModeScan(const char* channelsADC1, uint8_t sampleRate, bool async, volatile void* address) {
+    enablePeripherals(true, false);
+
+    uint8_t channels = setupSequence(_ADC1, channelsADC1, sampleRate);
+
+    ADC_enableScanMode(_ADC1);
+    ADC_enableDMA(_ADC1);
+    ADC_enableActivateBySoftware(_ADC1);
+
+    if (async) enableInterrupt();
+    ADC::async = async;
+    
+    setupDMA(address, DMA_16_BITS, channels);
+    
+    ADC_enable(_ADC1);
+}
+
+
 void ADC::readAll() {
     ADC_startConversion(_ADC1);
 

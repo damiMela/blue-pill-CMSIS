@@ -30,6 +30,8 @@ enum ADC_rates {
     CYCLES_71_5,
     CYCLES_239_5
 };
+
+#define ADC_conversionEnded(x)    (x==_ADC1) ? (ADC1->SR & ADC_SR_EOC) : (ADC2->SR & ADC_SR_EOC)
 /*!-----------FUNCIONES PUBLCIAS---------------------------------------------------------------------*/
 
 void ADC_enableInterrupt(uint8_t adcN);
@@ -44,7 +46,6 @@ void ADC_enableDualMode(void);
 void ADC_enableActivateBySoftware(uint8_t adcN);
 void ADC_startConversion(uint8_t adcN);
 void ADC_clearEOCFlag(uint8_t adcN);
-uint8_t ADC_conversionEnded(uint8_t adcN);
 uint16_t ADC_getData(uint8_t adcN);
 uint8_t SysFlag_ADC();
 

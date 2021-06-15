@@ -1,19 +1,5 @@
 #include <stdio.h>
-#include "System.h"
-
-#include <HAL/HardwareTimer.h>
-#include <HAL/InputPin.h>
-#include <HAL/OutputPin.h>
-#include <HAL/PWM.h>
-#include <HAL/Serial.h>
-#include <HAL/SoftwareTimer.h>
-#include <HAL/ADC.h>
-#include <Hardware/DR_ADC.h>
-#include <Hardware/DR_DMA.h>
-#include <Hardware/DR_GPIO.h>
-#include <Hardware/DR_PLL.h>
-
-#include <HAL/RHAL.h>
+#include <RHAL.h>
 
 //Hardware declaration
 OutputPin led(PORTC, 13, OutputPin::PUSH_PULL);
@@ -34,7 +20,7 @@ void ms_func(void) {
 void sendVal(void) {
     led = !led();
     ADC::readAll();
-    while (!SysFlag_ADC()) continue;
+    while (!ADC::ADC_flag()) continue;
     uint32_t buffer = res_2[0];  // PARA NO MOLESTAR AL DMA
 
     Serial::printBlocking(buffer);
@@ -56,7 +42,7 @@ int main() {
 
     //timer initialization
     Serial::init(9600);
-    SoftwareTimer timer(300, &sendVal);
+    SoftwareTimer timer(100, &sendVal);
 
     led.init();
     led = 1;
@@ -67,7 +53,7 @@ int main() {
     a3.init();
     a4.init();
     //ADC::setupDualModeScan("89", "98", CYCLES_28_5, false, &res);
-    ADC::setupSingleModeScan("897", CYCLES_28_5, true, &res_2);
+    ADC::setupSingleModeScan("897", ADC::ADC_CYCLES_28_5, true, &res_2);
 
     for (uint32_t i = 0; i < 7200000; i++) __NOP();  //delay para esperar a que se inicialize el serial console
     Serial::printBlocking("Hola!\n");

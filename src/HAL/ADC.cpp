@@ -8,6 +8,8 @@
 
 bool ADC::async = false;
 
+uint8_t ADC::ADC_flag(){ return SysFlag_ADC();};
+
 void ADC::setupDualModeScan(const char* channelsADC1, const char* channelsADC2, uint8_t sampleRate, bool async, volatile void* address) {
     enablePeripherals(true, true);
 

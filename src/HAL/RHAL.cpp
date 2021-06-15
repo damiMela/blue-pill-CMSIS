@@ -63,7 +63,7 @@ void RHAL::tick(void (* func )(void)){
 	
 	SoftwareTimer::tick();
 
-	func();
+	if(func != nullptr) func();
 }
 
 

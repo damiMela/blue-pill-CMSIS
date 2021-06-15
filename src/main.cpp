@@ -61,7 +61,7 @@ int main() {
     //printf("%X\t%X\n", ADC1->SQR3, ADC2->SQR3);
 
     while (1) {
-        hal.tick(&ms_func);
+        hal.tick();
 
         timer.loop();
     }

@@ -19,7 +19,7 @@
 class RHAL{
 public:
 	RHAL();
-	void tick(void (* func )(void));
+	void tick(void (* func )(void) = nullptr);
 	static void delay(uint32_t ms);
 	static uint32_t millis(void);
 

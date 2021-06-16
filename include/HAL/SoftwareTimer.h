@@ -21,7 +21,7 @@
 
 class SoftwareTimer{
 public:
-	SoftwareTimer(uint16_t time, void (*function)(void));
+	SoftwareTimer(uint16_t time, void (*function)(void), bool autoDelete = false);
 	void loop(void);
 	bool init(void);
 	bool pause(bool state);
@@ -38,12 +38,16 @@ public:
 private:
 	uint8_t _index;
 	uint16_t _time;
+	bool _autoDelete;
 	void (*_function)(void);
 
 	static uint16_t _timerCounters[ N_TIMERS ];
 	static void (*_timerFunctions[ N_TIMERS ])(void);
 	static uint32_t _runningTimers;
 	static uint32_t _usedTimers;
+	static uint32_t _deleteAtEnd;
+
+	static bool deleteTimer(uint8_t timerN);
 
 
 protected:

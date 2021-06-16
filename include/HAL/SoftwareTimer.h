@@ -28,6 +28,7 @@ public:
 	bool stop(void);
 	int16_t get(void);
 	bool set(uint16_t time);
+	bool ended();
 	
 	//void Close();
 	static void tick(void);

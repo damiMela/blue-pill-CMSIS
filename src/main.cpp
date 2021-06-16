@@ -1,68 +1,36 @@
-#include <stdio.h>
+//include library
 #include <RHAL.h>
 
 //Hardware declaration
-OutputPin led(PORTC, 13, OutputPin::PUSH_PULL);
-InputPin a1(PORTB, 0, InputPin::PULLDOWN);
-InputPin a2(PORTB, 1, InputPin::PULLDOWN);
-InputPin a3(PORTA, 6, InputPin::PULLDOWN);
-InputPin a4(PORTA, 7, InputPin::PULLDOWN);
+OutputPin led(PORTC, 13, OutputPin::PUSH_PULL); //builtin LED
+InputPin btn(PORTA, 7, InputPin::PULLUP);
 
-//Variable declaration
-
-volatile uint32_t res[2];
-volatile uint16_t res_2[3];
-volatile uint8_t irr = 0;
-
-void ms_func(void) {
-}
-
-void sendVal(void) {
-    led = !led();
-    ADC::readAll();
-    while (!ADC::ADC_flag()) continue;
-    uint32_t buffer = res_2[0];  // PARA NO MOLESTAR AL DMA
-
-    Serial::printBlocking(buffer);
-    Serial::printBlocking("\t");
-
-    buffer = res_2[1];
-    Serial::printBlocking(buffer);
-    Serial::printBlocking("\t");
-
-    buffer = res_2[2];
-    Serial::printBlocking(buffer);
-    Serial::printBlocking("\t");
-    Serial::printBlocking("\n");
+//blink function to be called every 1 millisecond
+void turnOffLed(){
+    led = false;    //turn the led off after a period of time.
 }
 
 int main() {
     //RHAL definition. Must be At the top
     RHAL hal;
 
-    //timer initialization
-    Serial::init(9600);
-    SoftwareTimer timer(100, &sendVal);
-
+    //Hardware inicialization
     led.init();
-    led = 1;
+    btn.init();
+    
+    led = false; //start with the led OFF 
 
-    //set adc pins to input push-pull (is done by setting input pulldown)
-    a1.init();
-    a2.init();
-    a3.init();
-    a4.init();
-    //ADC::setupDualModeScan("89", "98", CYCLES_28_5, false, &res);
-    ADC::setupSingleModeScan("897", ADC::ADC_CYCLES_28_5, true, &res_2);
-
-    for (uint32_t i = 0; i < 7200000; i++) __NOP();  //delay para esperar a que se inicialize el serial console
-    Serial::printBlocking("Hola!\n");
-
-    //printf("%X\t%X\n", ADC1->SQR3, ADC2->SQR3);
+    //Create a software timer. It will not start counting until the init() function is called 
+    SoftwareTimer ledTimer(3000, turnOffLed); //count 3 seconds and then call the function
 
     while (1) {
-        hal.tick();
+        hal.tick(); //system update. Must be at the top of the code     
 
-        timer.loop();
+        //if the button is pressed, the led will be turned on for 3 seconds. Then, it will turn off
+        if(btn() && ledTimer.ended()){ 
+            ledTimer.init();    //make the timer start counting
+            led = true;         //turn the led ON
+        }
+       
     }
 }

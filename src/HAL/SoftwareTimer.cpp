@@ -39,7 +39,6 @@ uint32_t SoftwareTimer::_runningTimers = 0;
 SoftwareTimer::SoftwareTimer(uint16_t time, void (*function)(void)){
 	_time = time;
 	_function = function;
-	init();
 }
 
 bool SoftwareTimer::init(void){
@@ -160,5 +159,6 @@ void SoftwareTimer::tick ( void ){
 	}
 }
 
-
-
+bool SoftwareTimer::ended(){
+	if(get() == 0) return true;
+}

@@ -25,6 +25,7 @@ class Serial {
     static void printBlocking(uint32_t num);
     static void println(const char* msj);
     static void println(uint32_t num);
+    static char* read();
 };
 
 #endif

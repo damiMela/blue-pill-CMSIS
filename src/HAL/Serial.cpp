@@ -9,6 +9,7 @@
 #include <HAL/InputPin.h>
 #include <Hardware/DR_PLL.h>
 #include <cstdlib>
+#include <queue>
 uint8_t Serial::_uart_n = 0;
 uint8_t Serial::_tx_pin = 0;
 uint8_t Serial::_rx_pin = 0;
@@ -135,4 +136,28 @@ void Serial::println(uint32_t num) {
 void Serial::println(const char* msj) {
     print(msj);
     pushTX('\n');
+}
+
+char* Serial::read(){    
+    uint8_t lenght = 0;
+    char temp = popRX();
+    std::queue<char> tempQueue;
+
+    while((temp < 32) || (temp > 126))temp = popRX();
+    while ((temp != '\n') && 
+                (temp != '\r') &&
+                (temp != 0) &&
+                (temp != 255)){
+        lenght++;
+        tempQueue.push(temp);
+        temp = popRX();
+    }
+    char *ret = new char(lenght+1);  
+    for (uint8_t  i = lenght; i > 0; i--) {
+        char temp2 = tempQueue.front();
+        ret[i-1]= temp2;
+        tempQueue.pop();
+    }
+    ret[lenght] = 0;
+    return ret;
 }

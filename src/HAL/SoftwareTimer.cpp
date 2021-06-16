@@ -181,4 +181,5 @@ void SoftwareTimer::tick ( void ){
 
 bool SoftwareTimer::ended(){
 	if(get() == 0) return true;
+	return false;
 }

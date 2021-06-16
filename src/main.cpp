@@ -13,6 +13,7 @@ void turnOffLed(){
 int main() {
     //RHAL definition. Must be At the top
     RHAL hal;
+    Serial::init(9600);
 
     //Hardware inicialization
     led.init();
@@ -22,15 +23,13 @@ int main() {
 
     //Create a software timer. It will not start counting until the init() function is called 
     SoftwareTimer ledTimer(3000, turnOffLed); //count 3 seconds and then call the function
+    RHAL::delay(10);
+    
 
     while (1) {
         hal.tick(); //system update. Must be at the top of the code     
 
         //if the button is pressed, the led will be turned on for 3 seconds. Then, it will turn off
-        if(btn() && ledTimer.ended()){ 
-            ledTimer.init();    //make the timer start counting
-            led = true;         //turn the led ON
-        }
-       
+        Serial::print(Serial::read());
     }
 }

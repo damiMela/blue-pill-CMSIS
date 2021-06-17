@@ -8,6 +8,7 @@
 #include <HAL/AlternatePin.h>
 #include <HAL/InputPin.h>
 #include <Hardware/DR_PLL.h>
+#include <tinyprintf.h>
 #include <cstdlib>
 #include <queue>
 uint8_t Serial::_uart_n = 0;
@@ -61,6 +62,8 @@ void Serial::init(uint32_t baudrate, uint8_t uartN) {
     if (_uart_n == UART1) NVIC_EnableIRQ(USART1_IRQn);
     if (_uart_n == UART2) NVIC_EnableIRQ(USART2_IRQn);
     UART_enable(_uart_n);
+
+    init_printf(NULL, USART1_putc);
 }
 
 int32_t Serial::popRX() {
@@ -106,28 +109,6 @@ void Serial::print(uint32_t num) {
     }
 }
 
-void Serial::printBlocking(const char* msj) {
-    uint32_t i = 0;
-    while (msj[i] != '\0') {
-        USART1->DR = msj[i];
-        while ((USART1->SR & USART_SR_TXE) == 0) continue;
-        i++;
-    }
-}
-
-void Serial::printBlocking(uint32_t num) {
-    uint8_t digits = 0;
-
-    uint32_t temp = num;
-    while (temp != 0) {
-        temp /= 10;
-        digits++;
-    }
-
-    char* str = (char*)calloc(digits, sizeof(char));
-    printBlocking(itoa(num, str, 10));
-}
-
 void Serial::println(uint32_t num) {
     print(num);
     pushTX('\n');
@@ -138,24 +119,24 @@ void Serial::println(const char* msj) {
     pushTX('\n');
 }
 
-char* Serial::read(){    
+char* Serial::read() {
     uint8_t lenght = 0;
     char temp = popRX();
     std::queue<char> tempQueue;
 
-    while((temp < 32) || (temp > 126))temp = popRX();
-    while ((temp != '\n') && 
-                (temp != '\r') &&
-                (temp != 0) &&
-                (temp != 255)){
+    while ((temp < 32) || (temp > 126)) temp = popRX();
+    while ((temp != '\n') &&
+           (temp != '\r') &&
+           (temp != 0) &&
+           (temp != 255)) {
         lenght++;
         tempQueue.push(temp);
         temp = popRX();
     }
-    char *ret = new char(lenght+1);  
-    for (uint8_t  i = lenght; i > 0; i--) {
+    char* ret = new char(lenght + 1);
+    for (uint8_t i = lenght; i > 0; i--) {
         char temp2 = tempQueue.front();
-        ret[i-1]= temp2;
+        ret[i - 1] = temp2;
         tempQueue.pop();
     }
     ret[lenght] = 0;

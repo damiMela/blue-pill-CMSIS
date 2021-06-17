@@ -21,8 +21,6 @@ class Serial {
     static void pushTX(uint8_t dato);
     static void print(const char* msj);
     static void print(uint32_t num);
-    static void printBlocking(const char* msj);
-    static void printBlocking(uint32_t num);
     static void println(const char* msj);
     static void println(uint32_t num);
     static char* read();

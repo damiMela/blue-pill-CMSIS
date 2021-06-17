@@ -49,6 +49,7 @@ void UART_pushRX(uint8_t uart_n, uint8_t data);
 int16_t UART_popTX(uint8_t uart_n);
 void UART_forceTX(uint8_t uart_n, uint8_t data);
 
+void USART1_putc(void* p, char c);
 
 #ifdef __cplusplus
 }

@@ -72,6 +72,10 @@ void RHAL::delay(uint32_t ms){
 	while(msTicks <= finishMs);
 }
 
+void RHAL::hardDelay(uint32_t ticks) {
+    while (ticks--) __NOP();
+}
+
 uint32_t RHAL::millis(void){
 	return(msTicks);
 }

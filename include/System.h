@@ -8,11 +8,12 @@
 #ifndef SYSTEM_H_
 #define SYSTEM_H_
 
+#include <tinyprintf.h>
+#include <stm32f1xx.h>
+
 #ifdef __cplusplus
 extern "C" {
 #endif
-
-#include "stm32f1xx.h"
 
 /******  types definitions  ***********************************************************************/
 //typedef	unsigned int		uint32_t;

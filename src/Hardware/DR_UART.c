@@ -134,27 +134,31 @@ void UART_forceTX(uint8_t uart_n, uint8_t data){
 }
 
 void USART1_IRQHandler(){
-        volatile uint8_t IIR = USART1->SR;
-        volatile int32_t dato;
+    volatile uint8_t IIR = USART1->SR;
+    volatile int32_t dato;
 
-        if(IIR & USART_SR_RXNE){
-            USART1->SR &= ~USART_SR_RXNE;
-            UART_pushRX(UART1, USART1->DR);
+    if(IIR & USART_SR_RXNE){
+        USART1->SR &= ~USART_SR_RXNE;
+        UART_pushRX(UART1, USART1->DR);
 
-		}
-		else if(IIR & USART_SR_TXE){
-            USART1->SR &= ~USART_SR_TXE;
-            dato = UART_popTX(UART1);
+    }
+    else if(IIR & USART_SR_TXE){
+        USART1->SR &= ~USART_SR_TXE;
+        dato = UART_popTX(UART1);
 
-			if(dato != -1)
-				UART_forceTX(UART1, dato);
-			else {
-				tx1_restart = 0;
-				USART1->CR1 &= ~(USART_CR1_TXEIE);
-			}
+        if(dato != -1)
+            UART_forceTX(UART1, dato);
+        else {
+            tx1_restart = 0;
+            USART1->CR1 &= ~(USART_CR1_TXEIE);
         }
+    }
+}
 
-	}
+void USART1_putc(void* p, char c) {
+    while ((USART1->SR & USART_SR_TXE) == 0) continue;
+    USART1->DR = c;
+}
 #ifdef __cplusplus
 }
 #endif

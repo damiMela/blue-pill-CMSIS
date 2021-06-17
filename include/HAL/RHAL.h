@@ -21,6 +21,7 @@ public:
 	RHAL();
 	void tick(void (* func )(void) = nullptr);
 	static void delay(uint32_t ms);
+	static void hardDelay(uint32_t ticks);
 	static uint32_t millis(void);
 
 private:

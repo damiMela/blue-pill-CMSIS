@@ -22,9 +22,8 @@ public:
     void setDutyCycle(uint8_t dc);
 
 private:
-    uint8_t _timerN, _port, _pin, _chn;
-    uint16_t _maxCount;
-
+    HardwareTimer *_timer;
+    uint8_t _port, _pin, _chn;
 };
 
 #endif

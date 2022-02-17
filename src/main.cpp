@@ -1,4 +1,4 @@
-#include <stdio.h>
+#include <tinyprintf.h>
 #include "System.h"
 
 #include <HAL/HardwareTimer.h>
@@ -15,43 +15,45 @@
 
 #include <HAL/RHAL.h>
 
+using namespace std;
+
 //Hardware declaration
 OutputPin led(PORTC, 13, OutputPin::PUSH_PULL);
 
 //Variable declaration
 
-volatile uint32_t res[2];
-volatile uint8_t irr = 0;
-
-void ms_func(void) {
-}
+volatile uint16_t res[4];
 
 void sendVal(void) {
     led = !led();
     ADC::readAll();
-    //while (!SysFlag_ADC()) continue;
-    uint32_t buffer = res[0];  // PARA NO MOLESTAR AL DMA
 
-    uint16_t val1, val2;
-    val2 = buffer >> 16;
-    val1 = buffer & 0xFFFF;
-    Serial::printBlocking(val1);
+    Serial::printBlocking(res[0]);
     Serial::printBlocking("\t");
-    Serial::printBlocking(val2);
+    Serial::printBlocking(res[1]);
     Serial::printBlocking("\n");
 
-    buffer = res[1];
-    val2 = buffer >> 16;
-    val1 = buffer & 0xFFFF;
-    Serial::printBlocking(val1);
+    Serial::printBlocking(res[2]);
     Serial::printBlocking("\t");
-    Serial::printBlocking(val2);
+    Serial::printBlocking(res[3]);
     Serial::printBlocking("\n");
+
+    Serial::printBlocking("\n");
+}
+
+void ms_func(void) {
+}
+
+extern "C" void putc(void* p, char c) {
+    while ((USART1->SR & USART_SR_TXE) == 0) continue;
+    USART1->DR = c;
 }
 
 int main() {
     //RHAL definition. Must be At the top
     RHAL hal;
+
+    init_printf(NULL, putc);
 
     //timer initialization
     Serial::init(9600);
@@ -69,13 +71,14 @@ int main() {
     ADC::setupDualModeScan("89", "98", CYCLES_28_5, false, &res);
 
     for (uint32_t i = 0; i < 7200000; i++) __NOP();  //delay para esperar a que se inicialize el serial console
-    Serial::printBlocking("Hola!\n");
+    //Serial::printBlocking("Hola!\n");
 
+        //cout << "hola" << endl;
     //printf("%X\t%X\n", ADC1->SQR3, ADC2->SQR3);
 
-    while (1) {
+    /*while (1) {
         hal.tick(&ms_func);
 
         timer.loop();
-    }
+    }*/
 }

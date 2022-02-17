@@ -9,6 +9,7 @@
         "dr_timer.h": "c",
         "dr_dma.h": "c",
         "dr_adc.h": "c",
-        "dr_systick.h": "c"
+        "dr_systick.h": "c",
+        "stm32f1xx.h": "c"
     }
 }
